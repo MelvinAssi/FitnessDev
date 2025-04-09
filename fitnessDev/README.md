@@ -1,21 +1,3 @@
-<<<<<<< HEAD
-"# FitnessDev" 
-
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-
-
-## Tech Stack
-    React: 
-    
-    Tools:
-        Figma: Design mockups.
-        Trello: Project management.
-        GitHub: Version control.
-        VSCode: Development environment.
-
-## Project Structure
-=======
 # FitnessDev
 
 FitnessDev est une appli web React/Vite pour une salle de fitness.
@@ -127,4 +109,3 @@ produits, cours, paiements, coachs et admin.
 - Melvin Assi (melvin_dev)
 - Sébastien (seb)
 - Tressir (trey)
->>>>>>> 915f3a76b259f36a316cd5a58644ac79f689aea9
