@@ -4,12 +4,12 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
 
-const NavbarRS = () => {
+const NavbarRS = ({ size, backgroundcolor, textcolor }) => {
 
 
 const NavbarRSstyle = styled.div`
-  width: 216px; 
-  height: 34px;
+  width: (${size}*4)+(5*16); 
+  height: ${size}px;
   
   
   ul {
@@ -27,14 +27,14 @@ const NavbarRSstyle = styled.div`
     align-items :center;
     justify-content :center;
     border-radius:50%;
-    background-color: #000000;
-    height:34px;
-    width:34px;
+    background-color: ${backgroundcolor};
+    height:${size}px;
+    width:${size}px;
     
   }
 
   a {    
-    color: #FFFFFF;
+    color: ${textcolor};
     line-height:0;
     transition: color 0.3s ease, transform 0.3s ease;
   }

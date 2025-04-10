@@ -7,7 +7,9 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Header/>
-        <AppRoutes />
+        <main style={{ paddingTop: '124px' }}>
+          <AppRoutes />
+        </main>        
       </BrowserRouter>
     </div>
   );

@@ -2,7 +2,7 @@
 
 const HomePage = () => {
   return (
-    <div>
+    <div style={{height:"300vh"}}>
       <h2>Bienvenue sur FitnessDev</h2>
     </div>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -15,24 +15,36 @@ const HeaderOffer = styled.div`
   font-weight: bold;
 `;
 
-const HeaderNavbar = styled.div`
+const HeaderNavbar = styled.div.attrs(props => ({
+  scrolled: props.scrolled,
+}))`
   display: flex;
+  position: fixed;
+  top: ${({ scrolled }) => (scrolled ? '0' : '40px')};
+  z-index: 999;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 80vw;
+  width: ${({ scrolled }) => (scrolled ? '100%' : '80vw')};
   height: 84px;
-  margin: 13px;
-  border-radius: 10px;
   padding : 0 20px;
-  background-color: #FFFFFF;
-  box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+  margin: ${({ scrolled }) => (scrolled ? '0 auto' : '13px ')};
+  border-radius: ${({ scrolled }) => (scrolled ? '0px' : '10px')};
+  background-color: ${({ scrolled }) => (scrolled ? '#000000' : '#FFFFFF')};
+  box-shadow: ${({ scrolled }) => (scrolled ? '0 4px 8px rgba(0,0,0,0.35)' : '0 4px 4px rgba(0,0,0,0.25)')};  
+  
+  transition: 
+    background-color 0.5s ease,
+    box-shadow 0.5s ease,
+    width 0.5s ease,
+    margin 0.5s ease,
+    border-radius 0.5s ease;
 
   ul {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap:20px;
+    gap: 20px;
     list-style: none;
   }
 
@@ -71,57 +83,79 @@ const HeaderNavbarRight = styled.div`
     background-color: #AE2119;    
     border-radius: 5px;
     padding :3px 14px;
+    
     transition: background-color 0.3s ease, transform 0.3s ease;
 
     h2{
       color : #FFFFFF;
     }
+    
   }
 
   li:last-child:hover{
     background-color: #000000;    
-  }
-
-  
+  }  
 `;
+const StyledH2 = styled.h2`
+  font-size: 12px;
+  color: ${({ scrolled }) => (scrolled ? '#FFFFFF' : '#000000')};
+  transition: color 0.3s ease;
+`;
+
 
 const Separator = styled.div`
   width: 1px; 
   height: 40px; 
-  background-color: #000000; 
+  background-color: ${({ scrolled }) => (scrolled ? '#FFFFFF' : '#000000')};
   margin: 0 10px;
 `;
 
 const Header = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 40;
+      setScrolled(isScrolled);
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <>
       <header style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
         <HeaderOffer>
           <p>🔥 Tes 4 premières semaines à 4,99€/semaine + ton sac à dos offert !</p>
         </HeaderOffer>
-        <HeaderNavbar>
+        <HeaderNavbar scrolled={scrolled}>
           <HeaderNavbar1>
             <ul>
-              <li><Link to="/"><h2>Accueil</h2></Link></li>
-              <li><Link to="/Contact"><h2>Contact</h2></Link></li>
-              <li><Link to="/Abonnement"><h2>Abonnement</h2></Link></li>
-              <li><Link to="/Produit"><h2>Produit</h2></Link></li>
-              <li><Link to="/Cours"><h2>Cours</h2></Link></li>
+              <li><Link to="/"><StyledH2 scrolled={scrolled}>Accueil</StyledH2></Link></li>
+              <li><Link to="/Contact"><StyledH2 scrolled={scrolled}>Contact</StyledH2></Link></li>
+              <li><Link to="/Abonnement"><StyledH2 scrolled={scrolled}>Abonnement</StyledH2></Link></li>
+              <li><Link to="/Produit"><StyledH2 scrolled={scrolled}>Produit</StyledH2></Link></li>
+              <li><Link to="/Cours"><StyledH2 scrolled={scrolled}>Cours</StyledH2></Link></li>
             </ul>
           </HeaderNavbar1>
           <HeaderNavbarRight>
-            <ul>
-              <li><Link to="/LogIn"><h2>Se connecter</h2></Link></li>
-              <li><Link to="/SingnUp"><h2>S'inscrire</h2></Link></li>
-            </ul>
+          <ul>
+            <li><Link to="/LogIn"><StyledH2 scrolled={scrolled}>Se connecter</StyledH2></Link></li>
+            <li><Link to="/SignUp"><StyledH2 scrolled={scrolled}>S'inscrire</StyledH2></Link></li>
+          </ul>
           </HeaderNavbarRight>
-          <Separator />
-          <NavbarRS style={{ height: "84px" }} />
+          <Separator scrolled={scrolled}/>
+          <NavbarRS 
+              size={34}
+              backgroundcolor={scrolled ? '#FFFFFF' : '#000000'}
+              textcolor={scrolled ? '#000000' : '#FFFFFF'} 
+        />
         </HeaderNavbar>
-        
       </header>
     </>
   );
 };
+
 
 export default Header;
