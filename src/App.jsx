@@ -6,10 +6,8 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Header/>
-        <main style={{ paddingTop: '124px' }}>
+        <Header/>        
           <AppRoutes />
-        </main>        
       </BrowserRouter>
     </div>
   );

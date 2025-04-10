@@ -57,17 +57,6 @@ const Select = styled.select`
   color :rgba(0, 0, 0, 0.5);
 `;
 
-
-const FileInput = styled.input`
-  border: none;
-  margin: 5px 0;
-  padding: 8px;
-  font-size: 16px;
-  width: 100%;
-  box-sizing: border-box;
-  cursor: pointer;
-`;
-
 const SubmitButton = styled.button`
   background-color: #ffffff;
   color: #000000;
@@ -103,74 +92,76 @@ const ContactPage = () => {
 
   return (
     <>
-      <FormContainer>
-        <FormTitle>CONTACTEZ-NOUS</FormTitle>
-        <Form id="contact-form" ref={formRef}>
-          <HorizontalGroup>
-            <div style={{ width: "50%" }}>
+      <main style={{ paddingTop: '124px' }}>        
+        <FormContainer>
+          <FormTitle>CONTACTEZ-NOUS</FormTitle>
+          <Form id="contact-form" ref={formRef}>
+            <HorizontalGroup>
+              <div style={{ width: "50%" }}>
+                <Input
+                  ref={addInputs}
+                  type="text"
+                  placeholder="Votre nom"
+                  pattern="[a-z]{2,}$"
+                  required
+                  aria-label="Entrer votre nom"
+                />
+              </div>
+              <div style={{ width: "50%" }}>
+                <Input
+                  ref={addInputs}
+                  type="text"
+                  placeholder="Votre prénom"
+                  pattern="[a-z]{2,}$"
+                  required
+                  aria-label="Entrer votre prénom"
+                />
+              </div>
+            </HorizontalGroup>
+
+            <HorizontalGroup>
+              <div style={{ width: "50%" }}>
+                <Input
+                  ref={addInputs}
+                  type="email"
+                  placeholder="Entrer votre email..."
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                  required
+                  aria-label="Entrer votre adresse email"
+                />
+              </div>
+              <div style={{ width: "50%" }}>
+                <Select ref={addInputs} id="Request_type" name="Request_type" required>
+                  <option value="">--Sélectionner votre service--</option>
+                  <option value="Paiement">Paiement</option>
+                  <option value="Connexion">Connexion</option>
+                </Select>
+              </div>
+            </HorizontalGroup>
+
+            <div>
               <Input
                 ref={addInputs}
                 type="text"
-                placeholder="Votre nom"
-                pattern="[a-z]{2,}$"
+                placeholder="Sujet de votre demande"
+                aria-label="Entrer le sujet de votre demande"
                 required
-                aria-label="Entrer votre nom"
               />
             </div>
-            <div style={{ width: "50%" }}>
-              <Input
+            <ButtonInputAdd/>
+            <div>
+              <Textarea
                 ref={addInputs}
-                type="text"
-                placeholder="Votre prénom"
-                pattern="[a-z]{2,}$"
+                placeholder="Écrivez votre message.."
+                rows="5"
+                aria-label="Entrer le message"
                 required
-                aria-label="Entrer votre prénom"
               />
             </div>
-          </HorizontalGroup>
-
-          <HorizontalGroup>
-            <div style={{ width: "50%" }}>
-              <Input
-                ref={addInputs}
-                type="email"
-                placeholder="Entrer votre email..."
-                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                required
-                aria-label="Entrer votre adresse email"
-              />
-            </div>
-            <div style={{ width: "50%" }}>
-              <Select ref={addInputs} id="Request_type" name="Request_type" required>
-                <option value="">--Sélectionner votre service--</option>
-                <option value="Paiement">Paiement</option>
-                <option value="Connexion">Connexion</option>
-              </Select>
-            </div>
-          </HorizontalGroup>
-
-          <div>
-            <Input
-              ref={addInputs}
-              type="text"
-              placeholder="Sujet de votre demande"
-              aria-label="Entrer le sujet de votre demande"
-              required
-            />
-          </div>
-          <ButtonInputAdd/>
-          <div>
-            <Textarea
-              ref={addInputs}
-              placeholder="Écrivez votre message.."
-              rows="5"
-              aria-label="Entrer le message"
-              required
-            />
-          </div>
-          <SubmitButton type="submit" className="send-button">Envoyer</SubmitButton>
-        </Form>
-      </FormContainer>
+            <SubmitButton type="submit" className="send-button">Envoyer</SubmitButton>
+          </Form>
+        </FormContainer>
+      </main>
     </>
   );
 };

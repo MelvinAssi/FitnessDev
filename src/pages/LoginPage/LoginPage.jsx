@@ -92,45 +92,48 @@ const LoginPage = () => {
     };
 
     return (
-        <FormContainer>
-            <h1>Connexion</h1>
-            <Form ref={formRef}>
-                <InputContainer>
-                    <div>                            
-                        <Input
-                            ref={addInputs}
-                            type="email"
-                            placeholder="Adresse e-mail"
-                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                            required
-                            aria-label="Entrez votre adresse email"
-                        />
-                    </div>
-                    <div>                            
-                        <Input
-                            ref={addInputs}
-                            type="password"
-                            placeholder="Mot de passe"
-                            required
-                            aria-label="Entrez votre mot de passe"
-                        />
-                    </div>
-                    <div>                            
-                        <Button type="submit">Se Connecter</Button>
-                    </div>
-                </InputContainer>
+        <main style={{ paddingTop: '124px' }}>
+            <FormContainer>
+                <h1>Connexion</h1>
+                <Form ref={formRef}>
+                    <InputContainer>
+                        <div>                            
+                            <Input
+                                ref={addInputs}
+                                type="email"
+                                placeholder="Adresse e-mail"
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                required
+                                aria-label="Entrez votre adresse email"
+                            />
+                        </div>
+                        <div>                            
+                            <Input
+                                ref={addInputs}
+                                type="password"
+                                placeholder="Mot de passe"
+                                required
+                                aria-label="Entrez votre mot de passe"
+                            />
+                        </div>
+                        <div>                            
+                            <Button type="submit">Se Connecter</Button>
+                        </div>
+                    </InputContainer>
 
-                <ReCAPTCHACenterWrapper>
-                    <ReCAPTCHA
-                        sitekey="6LdNwBArAAAAAPUVKb7yL-hQF-1I2AJDPvhDrCqA"
-                        onChange={handleRecaptchaChange}
-                    />
-                </ReCAPTCHACenterWrapper>
-            </Form>
-            <p>
-                Tu n'as pas encore de compte ? <Link to="/signup" className="signup-link">M'inscrire maintenant</Link>
-            </p>
-        </FormContainer>
+                    <ReCAPTCHACenterWrapper>
+                        <ReCAPTCHA
+                            sitekey="6LdNwBArAAAAAPUVKb7yL-hQF-1I2AJDPvhDrCqA"
+                            onChange={handleRecaptchaChange}
+                        />
+                    </ReCAPTCHACenterWrapper>
+                </Form>
+                <p>
+                    Tu n'as pas encore de compte ? <Link to="/signup" className="signup-link">M'inscrire maintenant</Link>
+                </p>
+            </FormContainer>
+        </main>
+        
     );
 };
 

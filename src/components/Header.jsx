@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import NavbarRS from './NavbarRS.jsx';
 import useScroll from '../hooks/useScroll.jsx';
 
-const HeaderOffer = styled.div`
+// Define Styled Components outside of the component
+const HeaderOffer = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'scrolled',
+})`
   background-color: #AE2119;
   width: 100vw;
   height: 40px;
@@ -16,7 +19,9 @@ const HeaderOffer = styled.div`
   font-weight: bold;
 `;
 
-const HeaderNavbar = styled.div`
+const HeaderNavbar = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'scrolled',
+})`
   display: flex;
   position: fixed;
   z-index: 999;
@@ -25,7 +30,7 @@ const HeaderNavbar = styled.div`
   align-items: center;
   width: ${({ scrolled }) => (scrolled ? '100%' : '80vw')};
   height: 84px;
-  padding : 0 20px;
+  padding: 0 20px;
   margin: ${({ scrolled }) => (scrolled ? '0 auto' : '13px ')};
   border-radius: ${({ scrolled }) => (scrolled ? '0px' : '10px')};
   background-color: ${({ scrolled }) => (scrolled ? '#000000' : '#FFFFFF')};
@@ -36,7 +41,7 @@ const HeaderNavbar = styled.div`
     width 0.5s ease,
     margin 0.5s ease,
     border-radius 0.5s ease;
-
+  
   ul {
     display: flex;
     flex-direction: row;
@@ -59,7 +64,9 @@ const HeaderNavbar = styled.div`
   }
 `;
 
-const HeaderNavbarLeft = styled.div`
+const HeaderNavbarLeft = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'scrolled',
+})`
   display: flex;
   flex-direction: row;
   justify-content: start;
@@ -68,40 +75,45 @@ const HeaderNavbarLeft = styled.div`
   flex-grow: 1;
 `;
 
-const HeaderNavbarRight = styled.div`
+const HeaderNavbarRight = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'scrolled',
+})`
   display: flex;
   flex-direction: row;
   align-items: center;
 
-
-  li:last-child{
+  li:last-child {
     display: flex;
     align-items: center;
-    justify-content :center;
-    height:30px;
-    width :90px;
+    justify-content: center;
+    height: 30px;
+    width: 90px;
     background-color: #AE2119;    
     border-radius: 5px;
-    text-align:30px;    
+    text-align: center;    
     transition: background-color 0.3s ease, transform 0.3s ease;
 
-    h2{
-      color : #FFFFFF;
+    h2 {
+      color: #FFFFFF;
     }    
   }
 
-  li:last-child:hover{
+  li:last-child:hover {
     background-color: #000000;    
   }  
 `;
-const StyledH2 = styled.h2`
+
+const StyledH2 = styled.h2.withConfig({
+  shouldForwardProp: (prop) => prop !== 'scrolled',
+})`
   font-size: 12px;
   color: ${({ scrolled }) => (scrolled ? '#FFFFFF' : '#000000')};
   transition: color 0.3s ease;
 `;
 
-
-const Separator = styled.div`
+const Separator = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop !== 'scrolled',
+})`
   width: 1px; 
   height: 40px; 
   background-color: ${({ scrolled }) => (scrolled ? '#FFFFFF' : '#000000')};
@@ -110,6 +122,7 @@ const Separator = styled.div`
 
 const Header = () => {
   const scrolled = useScroll();
+  console.log(scrolled);
 
   return (
     <>
@@ -133,17 +146,16 @@ const Header = () => {
               <li><Link to="/SignUp"><StyledH2 scrolled={scrolled}>S'inscrire</StyledH2></Link></li>
             </ul>
           </HeaderNavbarRight>
-          <Separator scrolled={scrolled}/>
+          <Separator scrolled={scrolled} />
           <NavbarRS 
-              size={34}
-              backgroundcolor={scrolled ? '#FFFFFF' : '#000000'}
-              textcolor={scrolled ? '#000000' : '#FFFFFF'} 
+            size={34}
+            backgroundcolor={scrolled ? '#FFFFFF' : '#000000'}  // Couleur de fond dynamique
+            textcolor={scrolled ? '#000000' : '#FFFFFF'}  // Couleur du texte dynamique
           />
         </HeaderNavbar>
       </header>
     </>
   );
 };
-
 
 export default Header;

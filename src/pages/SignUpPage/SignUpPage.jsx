@@ -58,83 +58,83 @@ const SignUpPage = () => {
 
     return(
         <>
-            <Form ref={formRef}> 
-                <Select ref={addInputs} required>
-                    <option value="">Civilité</option>
-                    <option value="Paiement">Homme</option>
-                    <option value="Connexion">Femme</option>
-                </Select>
-                <Input
-                    ref={addInputs}
-                    type="text"
-                    placeholder="Votre nom"
-                    pattern="[a-z]{2,}$"
-                    required
-                    aria-label="Entrer votre nom"
-                />
-                <Input
-                    ref={addInputs}
-                    type="text"
-                    placeholder="Votre prénom"
-                    pattern="[a-z]{2,}$"
-                    required
-                    aria-label="Entrer votre prénom"
-                />
-                <Input
-                    ref={addInputs}
-                    type="date"
-                    placeholder="Votre date de naissance"
-                    required
-                    aria-label="Entrer votre date de naissance"
-                />
-                <Input
-                    ref={addInputs}
-                    type="number"
-                    placeholder="Votre numéro de téléphone"
-                    required
-                    aria-label="Entrer votre numéro de téléphone"
-                />
-                 <Input
-                    ref={addInputs}
-                    type="email"
-                    placeholder="Adresse e-mail"
-                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                    required
-                    aria-label="Entrez votre adresse e-mail"
-                />
-                <Input
-                    ref={addInputs}
-                    type="email"
-                    placeholder="Confirmation adresse e-mail"
-                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                    required
-                    aria-label="Entrez votre adresse e-mail"
-                />
-                                        
-                <Input
-                    ref={addInputs}
-                    type="password"
-                    placeholder="Mot de passe"
-                    required
-                    aria-label="Entrez votre mot de passe"
-                />
-                <Input
-                    ref={addInputs}
-                    type="text"
-                    placeholder="Adresse"
-                    required
-                    aria-label="Entrez votre adresse"
-                />
-            
-                <ReCAPTCHA
-                    sitekey="6LdNwBArAAAAAPUVKb7yL-hQF-1I2AJDPvhDrCqA"
-                />
-                <div>                            
-                    <Button type="submit">JE CONFIRME</Button>
-                </div>  
-            </Form>
-        
-        
+            <main style={{ paddingTop: '124px' }}>
+                <Form ref={formRef}> 
+                    <Select ref={addInputs} required>
+                        <option value="">Civilité</option>
+                        <option value="Paiement">Homme</option>
+                        <option value="Connexion">Femme</option>
+                    </Select>
+                    <Input
+                        ref={addInputs}
+                        type="text"
+                        placeholder="Votre nom"
+                        pattern="[a-z]{2,}$"
+                        required
+                        aria-label="Entrer votre nom"
+                    />
+                    <Input
+                        ref={addInputs}
+                        type="text"
+                        placeholder="Votre prénom"
+                        pattern="[a-z]{2,}$"
+                        required
+                        aria-label="Entrer votre prénom"
+                    />
+                    <Input
+                        ref={addInputs}
+                        type="date"
+                        placeholder="Votre date de naissance"
+                        required
+                        aria-label="Entrer votre date de naissance"
+                    />
+                    <Input
+                        ref={addInputs}
+                        type="number"
+                        placeholder="Votre numéro de téléphone"
+                        required
+                        aria-label="Entrer votre numéro de téléphone"
+                    />
+                    <Input
+                        ref={addInputs}
+                        type="email"
+                        placeholder="Adresse e-mail"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        required
+                        aria-label="Entrez votre adresse e-mail"
+                    />
+                    <Input
+                        ref={addInputs}
+                        type="email"
+                        placeholder="Confirmation adresse e-mail"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        required
+                        aria-label="Entrez votre adresse e-mail"
+                    />
+                                            
+                    <Input
+                        ref={addInputs}
+                        type="password"
+                        placeholder="Mot de passe"
+                        required
+                        aria-label="Entrez votre mot de passe"
+                    />
+                    <Input
+                        ref={addInputs}
+                        type="text"
+                        placeholder="Adresse"
+                        required
+                        aria-label="Entrez votre adresse"
+                    />
+                
+                    <ReCAPTCHA
+                        sitekey="6LdNwBArAAAAAPUVKb7yL-hQF-1I2AJDPvhDrCqA"
+                    />
+                    <div>                            
+                        <Button type="submit">JE CONFIRME</Button>
+                    </div>  
+                </Form>
+            </main>
         </>
     )
 }
