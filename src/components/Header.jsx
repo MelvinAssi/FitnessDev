@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import NavbarRS from './NavbarRS.jsx';
+import useScroll from '../hooks/useScroll.jsx';
 
 const HeaderOffer = styled.div`
   background-color: #AE2119;
@@ -15,24 +16,20 @@ const HeaderOffer = styled.div`
   font-weight: bold;
 `;
 
-const HeaderNavbar = styled.div.attrs(props => ({
-  scrolled: props.scrolled,
-}))`
+const HeaderNavbar = styled.div`
   display: flex;
   position: fixed;
-  top: ${({ scrolled }) => (scrolled ? '0' : '40px')};
   z-index: 999;
+  top: ${({ scrolled }) => (scrolled ? '0' : '40px')};  
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   width: ${({ scrolled }) => (scrolled ? '100%' : '80vw')};
   height: 84px;
   padding : 0 20px;
   margin: ${({ scrolled }) => (scrolled ? '0 auto' : '13px ')};
   border-radius: ${({ scrolled }) => (scrolled ? '0px' : '10px')};
   background-color: ${({ scrolled }) => (scrolled ? '#000000' : '#FFFFFF')};
-  box-shadow: ${({ scrolled }) => (scrolled ? '0 4px 8px rgba(0,0,0,0.35)' : '0 4px 4px rgba(0,0,0,0.25)')};  
-  
+  box-shadow: ${({ scrolled }) => (scrolled ? '0 4px 8px rgba(0,0,0,0.35)' : '0 4px 4px rgba(0,0,0,0.25)')};    
   transition: 
     background-color 0.5s ease,
     box-shadow 0.5s ease,
@@ -62,15 +59,13 @@ const HeaderNavbar = styled.div.attrs(props => ({
   }
 `;
 
-const HeaderNavbar1 = styled.div`
+const HeaderNavbarLeft = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: start;
   align-items: start;
   color: #000000;
   flex-grow: 1;
-  
-
 `;
 
 const HeaderNavbarRight = styled.div`
@@ -80,16 +75,19 @@ const HeaderNavbarRight = styled.div`
 
 
   li:last-child{
+    display: flex;
+    align-items: center;
+    justify-content :center;
+    height:30px;
+    width :90px;
     background-color: #AE2119;    
     border-radius: 5px;
-    padding :3px 14px;
-    
+    text-align:30px;    
     transition: background-color 0.3s ease, transform 0.3s ease;
 
     h2{
       color : #FFFFFF;
-    }
-    
+    }    
   }
 
   li:last-child:hover{
@@ -111,17 +109,7 @@ const Separator = styled.div`
 `;
 
 const Header = () => {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 40;
-      setScrolled(isScrolled);
-    };
-  
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const scrolled = useScroll();
 
   return (
     <>
@@ -130,7 +118,7 @@ const Header = () => {
           <p>🔥 Tes 4 premières semaines à 4,99€/semaine + ton sac à dos offert !</p>
         </HeaderOffer>
         <HeaderNavbar scrolled={scrolled}>
-          <HeaderNavbar1>
+          <HeaderNavbarLeft>
             <ul>
               <li><Link to="/"><StyledH2 scrolled={scrolled}>Accueil</StyledH2></Link></li>
               <li><Link to="/Contact"><StyledH2 scrolled={scrolled}>Contact</StyledH2></Link></li>
@@ -138,19 +126,19 @@ const Header = () => {
               <li><Link to="/Produit"><StyledH2 scrolled={scrolled}>Produit</StyledH2></Link></li>
               <li><Link to="/Cours"><StyledH2 scrolled={scrolled}>Cours</StyledH2></Link></li>
             </ul>
-          </HeaderNavbar1>
+          </HeaderNavbarLeft>
           <HeaderNavbarRight>
-          <ul>
-            <li><Link to="/LogIn"><StyledH2 scrolled={scrolled}>Se connecter</StyledH2></Link></li>
-            <li><Link to="/SignUp"><StyledH2 scrolled={scrolled}>S'inscrire</StyledH2></Link></li>
-          </ul>
+            <ul>
+              <li><Link to="/LogIn"><StyledH2 scrolled={scrolled}>Se connecter</StyledH2></Link></li>
+              <li><Link to="/SignUp"><StyledH2 scrolled={scrolled}>S'inscrire</StyledH2></Link></li>
+            </ul>
           </HeaderNavbarRight>
           <Separator scrolled={scrolled}/>
           <NavbarRS 
               size={34}
               backgroundcolor={scrolled ? '#FFFFFF' : '#000000'}
               textcolor={scrolled ? '#000000' : '#FFFFFF'} 
-        />
+          />
         </HeaderNavbar>
       </header>
     </>
