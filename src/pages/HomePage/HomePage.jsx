@@ -5,9 +5,10 @@ import fd_homepage3 from "../../assets/images/fd_homepage3.jpg";
 
 
 import styled from 'styled-components';
+import Carousel from "../../components/Carousel";
 
 const Section = styled.div`
-  background-image: ${({ bgImage }) => `url(${bgImage})`};
+  background-image: ${({ bgimage }) => `url(${bgimage})`};
   height: 100vh;
   background-size: cover;
   background-position: center;
@@ -38,21 +39,20 @@ const Section = styled.div`
 const HomePage = () => {
   return (
     <main>
-      <Section bgImage={fd_homepage1} style={{flexDirection : "column"}}>
+      <Section bgimage={fd_homepage1} style={{flexDirection : "column"}}>
         <h1>DÉPASSE-TOI ET ATTEINS TES OBJECTIFS !</h1>
         <p>Retrouve ton club FitnessDev le plus proche de 6H à 23H en France</p>
       </Section>
-      <Section bgImage={fd_homepage2}>
+      <Section bgimage={fd_homepage2}>
         <div style={{width :"50%",color:"#000000"}}>
           <h1>FITNESSDEV CLUBS DE SPORT</h1>
           <p>Trouve ton club FitnessDev le plus proche et profite d’un accès 7j/7, de à 23H</p>
           <p>Avec ta carte FitnessDev, tu as accès librement à l'ensemble de nos clubs, ouverts de 6h à 23h* en France, Espagne et dans les DOM-TOM.</p>
           <p>Non-stop, 7j/7, 365 jours/an, pour t'entraîner, te surpasser et réaliser tes objectifs sans contrainte.</p>
         </div>
-        <div style={{width :"50%"}}></div>
-        
+        <div style={{width :"50%"}}></div>        
       </Section>
-      <Section bgImage={fd_homepage3}>
+      <Section bgimage={fd_homepage3}>
         <div style={{width :"50%" }}>
           
         </div>
@@ -64,8 +64,9 @@ const HomePage = () => {
        </div>
         
       </Section>
-      <Section style={{backgroundColor:"#000000"}}>
-
+      <Section style={{flexDirection : "column",backgroundColor:"#000000"}}>
+          <h1 style={{color :"#ffffff"}}>Notre Salle</h1>
+          <Carousel ></Carousel>
       </Section>
     </main>
   );

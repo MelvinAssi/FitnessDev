@@ -92,7 +92,7 @@ const ContactPage = () => {
 
   return (
     <>
-      <main style={{ paddingTop: '124px' }}>        
+      <main style={{minHeight:"100vh", paddingTop: '124px' }}>        
         <FormContainer>
           <FormTitle>CONTACTEZ-NOUS</FormTitle>
           <Form id="contact-form" ref={formRef}>

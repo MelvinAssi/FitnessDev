@@ -55,10 +55,9 @@ const SignUpPage = () => {
             inputs.current.push(el);
         }
     };
-
     return(
         <>
-            <main style={{ paddingTop: '124px' }}>
+            <main style={{minHeight:"100vh", paddingTop: '124px' }}>
                 <Form ref={formRef}> 
                     <Select ref={addInputs} required>
                         <option value="">Civilité</option>

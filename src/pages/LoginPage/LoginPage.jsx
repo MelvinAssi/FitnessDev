@@ -92,7 +92,7 @@ const LoginPage = () => {
     };
 
     return (
-        <main style={{ paddingTop: '124px' }}>
+        <main style={{minHeight:"100vh", paddingTop: '124px' }}>            
             <FormContainer>
                 <h1>Connexion</h1>
                 <Form ref={formRef}>
@@ -133,7 +133,6 @@ const LoginPage = () => {
                 </p>
             </FormContainer>
         </main>
-        
     );
 };
 
