@@ -1,5 +1,6 @@
-import React, { useRef,useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useRef,useState,useContext } from "react";
+import { Link,useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 import styled from "styled-components";
 import ReCAPTCHA from 'react-google-recaptcha';
 
@@ -75,19 +76,28 @@ const ReCAPTCHACenterWrapper = styled.div`
 
 const LoginPage = () => {
     const [recaptchaValue, setRecaptchaValue] = useState(null);
+    const { login } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const formRef = useRef();
+    const inputs = useRef([]);
+
 
     const handleRecaptchaChange = (value) => {
         setRecaptchaValue(value);
         console.log("ReCAPTCHA value: ", value); 
     };
-
-
-
-    const formRef = useRef();
-    const inputs = useRef([]);
     const addInputs = (el) => {
         if (el && !inputs.current.includes(el)) {
             inputs.current.push(el);
+        }
+    };
+    const handleForm = async (e) => {
+        e.preventDefault();
+        try {
+          await login(inputs.current[0].value, inputs.current[1].value);
+          navigate('/'); 
+        } catch (error) {
+          alert('Login failed');
         }
     };
 
@@ -95,17 +105,18 @@ const LoginPage = () => {
         <main style={{minHeight:"100vh", paddingTop: '124px' }}>            
             <FormContainer>
                 <h1>Connexion</h1>
-                <Form ref={formRef}>
+                <Form ref={formRef} onSubmit={handleForm}>
                     <InputContainer>
                         <div>                            
-                            <Input
-                                ref={addInputs}
-                                type="email"
-                                placeholder="Adresse e-mail"
-                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                                required
-                                aria-label="Entrez votre adresse email"
-                            />
+                        <Input
+                            ref={addInputs}
+                            type="email"
+                            placeholder="Adresse e-mail"
+                            pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+                            required
+                            aria-label="Entrez votre adresse email"
+                        />
+
                         </div>
                         <div>                            
                             <Input

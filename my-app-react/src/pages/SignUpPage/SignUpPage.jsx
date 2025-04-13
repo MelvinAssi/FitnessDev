@@ -1,5 +1,6 @@
-import React, { useRef,useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useRef,useState,useContext } from "react";
+import { Link,useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 import styled from "styled-components";
 import ReCAPTCHA from 'react-google-recaptcha';
 
@@ -48,6 +49,8 @@ const Button = styled.button`
   }
 `;
 const SignUpPage = () => {
+    const { signup } = useContext(AuthContext);
+    const navigate = useNavigate();
     const formRef = useRef();
     const inputs = useRef([]);
     const addInputs = (el) => {
@@ -55,10 +58,34 @@ const SignUpPage = () => {
             inputs.current.push(el);
         }
     };
+    const handleForm = async (e) => {
+        e.preventDefault();
+
+        const data = {
+            civilite: inputs.current[0]?.value,
+            name: inputs.current[1]?.value,
+            firstname: inputs.current[2]?.value,
+            birthday: inputs.current[3]?.value,
+            phone: inputs.current[4]?.value,
+            email: inputs.current[5]?.value,
+            emailConfirm: inputs.current[6]?.value,
+            password: inputs.current[7]?.value,
+            adress: inputs.current[8]?.value,
+        };
+        if (data.email !== data.emailConfirm) {
+            return alert("Les adresses e-mail ne correspondent pas.");
+        }
+        try {
+          await signup(data);
+          navigate('/'); 
+        } catch (error) {
+          alert('signup failed');
+        }
+    };
     return(
         <>
             <main style={{minHeight:"100vh", paddingTop: '124px' }}>
-                <Form ref={formRef}> 
+                <Form ref={formRef} onSubmit={handleForm}> 
                     <Select ref={addInputs} required>
                         <option value="">Civilité</option>
                         <option value="Paiement">Homme</option>

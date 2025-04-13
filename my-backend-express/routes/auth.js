@@ -5,7 +5,7 @@ const pool = require('../config/db');
 require('dotenv').config();
 
 const router = express.Router();
-router.post('/inscription', async (req, res) => {
+router.post('/signup', async (req, res) => {
     try {
         const {
             email_inscrit,
