@@ -3,6 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const userAbonnementRoutes = require('./routes/abonnement');
+const typeAbonnementRoutes = require('./routes/typeAbonnement');
+
 require('dotenv').config();
 
 const app = express();
@@ -16,6 +19,8 @@ app.use(express.json());
 
 app.use('/auth', authRoutes); 
 app.use('/user', userRoutes); 
+app.use('/user/abonnement', userAbonnementRoutes);
+app.use('/type_abonnement', typeAbonnementRoutes);
 app.get('/', (req, res) => {
     res.send('Bienvenue sur l\'API Express !');
 });
