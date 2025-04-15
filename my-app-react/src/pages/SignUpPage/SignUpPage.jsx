@@ -88,8 +88,8 @@ const SignUpPage = () => {
                 <Form ref={formRef} onSubmit={handleForm}> 
                     <Select ref={addInputs} required>
                         <option value="">Civilité</option>
-                        <option value="Paiement">Homme</option>
-                        <option value="Connexion">Femme</option>
+                        <option value="Homme">Homme</option>
+                        <option value="Femme">Femme</option>
                     </Select>
                     <Input
                         ref={addInputs}

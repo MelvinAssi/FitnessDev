@@ -16,6 +16,8 @@ router.post('/signup', async (req, res) => {
             mdp_inscrit,
             type_inscrit,
             id_abonnement,
+            date_naissance,
+            civilite_inscrit,
         } = req.body;
 
         
@@ -35,8 +37,9 @@ router.post('/signup', async (req, res) => {
         const newUser = await pool.query(
             `INSERT INTO INSCRIT (
                 email_inscrit, nom_inscrit, prenom_inscrit, adresse_inscrit,
-                telephone_inscrit, mdp_inscrit, type_inscrit, id_abonnement
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+                telephone_inscrit, mdp_inscrit, type_inscrit, id_abonnement,
+                date_naissance, civilite_inscrit
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
             [
                 email_inscrit,
                 nom_inscrit,
@@ -46,6 +49,8 @@ router.post('/signup', async (req, res) => {
                 hashedPassword,
                 type_inscrit || 'client', 
                 id_abonnement || null,
+                date_naissance,
+                civilite_inscrit
             ]
         );
 

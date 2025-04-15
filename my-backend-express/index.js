@@ -6,6 +6,7 @@ const userRoutes = require('./routes/user');
 const userAbonnementRoutes = require('./routes/abonnement');
 const typeAbonnementRoutes = require('./routes/typeAbonnement');
 const produitRoutes = require('./routes/produit');
+const achatRoutes = require('./routes/achat')
 
 require('dotenv').config();
 
@@ -22,7 +23,8 @@ app.use('/auth', authRoutes);
 app.use('/user', userRoutes); 
 app.use('/user/abonnement', userAbonnementRoutes);
 app.use('/type_abonnement', typeAbonnementRoutes);
-app.use("/produit",produitRoutes)
+app.use("/produit",produitRoutes);
+app.use("/user/achat",achatRoutes);
 app.get('/', (req, res) => {
     res.send('Bienvenue sur l\'API Express !');
 });
