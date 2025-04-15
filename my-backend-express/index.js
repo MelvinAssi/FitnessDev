@@ -11,9 +11,17 @@ const authRoutes = require('./routes/auth');
 
 // Importe les routes définies dans routes/user.js, qui gèrent le profil (/user/profil) et les cours précédents (/user/previous-courses).
 const userRoutes = require('./routes/user');
+<<<<<<< HEAD
 
 // Charge les variables d'environnement depuis le fichier .env (ex. : DB_USER, JWT_SECRET).
 // Le module dotenv lit .env et les rend accessibles via process.env.
+=======
+const userAbonnementRoutes = require('./routes/abonnement');
+const typeAbonnementRoutes = require('./routes/typeAbonnement');
+const produitRoutes = require('./routes/produit');
+const achatRoutes = require('./routes/achat')
+
+>>>>>>> melvin_dev
 require('dotenv').config();
 
 // Crée une instance de l'application Express, qui représente le serveur.
@@ -37,6 +45,7 @@ const port = 3000;
 // Sans cela, req.body serait undefined pour les requêtes JSON.
 app.use(express.json());
 
+<<<<<<< HEAD
 // Associe toutes les routes commençant par /auth (ex. : /auth/login, /auth/signup) au routeur authRoutes.
 // Arguments :
 // - '/auth' : Préfixe appliqué à toutes les routes définies dans authRoutes.
@@ -55,6 +64,14 @@ app.use('/user', userRoutes);
 // - (req, res) => {...} : Fonction de gestion (callback) qui traite la requête.
 //   - req : Objet requête, contient les données envoyées par le client (non utilisé ici).
 //   - res : Objet réponse, utilisé pour envoyer une réponse au client.
+=======
+app.use('/auth', authRoutes); 
+app.use('/user', userRoutes); 
+app.use('/user/abonnement', userAbonnementRoutes);
+app.use('/type_abonnement', typeAbonnementRoutes);
+app.use("/produit",produitRoutes);
+app.use("/user/achat",achatRoutes);
+>>>>>>> melvin_dev
 app.get('/', (req, res) => {
     // Envoie une réponse texte simple au client.
     // res.send() est une fonction Express qui définit le corps de la réponse et termine la requête.

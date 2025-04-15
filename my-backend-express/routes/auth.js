@@ -33,10 +33,15 @@ router.post('/signup', async (req, res) => {
             type_inscrit,
             id_abonnement,
 <<<<<<< HEAD
+<<<<<<< HEAD
             date_naissance,
             civilite_inscrit,
 =======
 >>>>>>> f7ff712dda30f821a846590a99df5e3672116ff1
+=======
+            date_naissance,
+            civilite_inscrit,
+>>>>>>> melvin_dev
         } = req.body;
 
         // Vérifie si l'email existe déjà pour éviter les doublons.
@@ -76,6 +81,9 @@ router.post('/signup', async (req, res) => {
             `INSERT INTO INSCRIT (
                 email_inscrit, nom_inscrit, prenom_inscrit, adresse_inscrit,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> melvin_dev
                 telephone_inscrit, mdp_inscrit, type_inscrit, id_abonnement,
                 date_naissance, civilite_inscrit
             ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
@@ -90,6 +98,7 @@ router.post('/signup', async (req, res) => {
                 id_abonnement || null,
                 date_naissance,
                 civilite_inscrit
+<<<<<<< HEAD
 =======
                 telephone_inscrit, mdp_inscrit, type_inscrit, id_abonnement
             ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
@@ -103,6 +112,8 @@ router.post('/signup', async (req, res) => {
                 type_inscrit || 'client', // $7 : Type, par défaut 'client' si non fourni (opérateur || pour fallback).
                 id_abonnement || null, // $8 : ID abonnement, null si non fourni.
 >>>>>>> f7ff712dda30f821a846590a99df5e3672116ff1
+=======
+>>>>>>> melvin_dev
             ]
         );
 

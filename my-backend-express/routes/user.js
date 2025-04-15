@@ -53,6 +53,7 @@ router.get('/profil', authMiddleware, async (req, res) => {
     }
 });
 
+<<<<<<< HEAD
 // Route GET /user/previous-courses : Récupère les 6 derniers cours suivis par l'utilisateur.
 router.get('/previous-courses', authMiddleware, async (req, res) => {
     try {
@@ -93,4 +94,8 @@ router.get('/previous-courses', authMiddleware, async (req, res) => {
 });
 
 // Exporte le routeur pour qu'il soit utilisé dans index.js.
+=======
+
+
+>>>>>>> melvin_dev
 module.exports = router;
