@@ -137,7 +137,7 @@ const Header = () => {
               <li><Link to="/Contact"><StyledH2 scrolled={scrolled}>Contact</StyledH2></Link></li>
               <li><Link to="/subscription"><StyledH2 scrolled={scrolled}>Abonnement</StyledH2></Link></li>
               <li><Link to="/Produit"><StyledH2 scrolled={scrolled}>Produit</StyledH2></Link></li>
-              <li><Link to="/Cours"><StyledH2 scrolled={scrolled}>Cours</StyledH2></Link></li>
+              <li><Link to="/courses"><StyledH2 scrolled={scrolled}>Cours</StyledH2></Link></li>
             </ul>
           </HeaderNavbarLeft>
           <HeaderNavbarRight>
