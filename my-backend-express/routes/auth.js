@@ -32,8 +32,11 @@ router.post('/signup', async (req, res) => {
             mdp_inscrit,
             type_inscrit,
             id_abonnement,
+<<<<<<< HEAD
             date_naissance,
             civilite_inscrit,
+=======
+>>>>>>> f7ff712dda30f821a846590a99df5e3672116ff1
         } = req.body;
 
         // Vérifie si l'email existe déjà pour éviter les doublons.
@@ -72,6 +75,7 @@ router.post('/signup', async (req, res) => {
         const newUser = await pool.query(
             `INSERT INTO INSCRIT (
                 email_inscrit, nom_inscrit, prenom_inscrit, adresse_inscrit,
+<<<<<<< HEAD
                 telephone_inscrit, mdp_inscrit, type_inscrit, id_abonnement,
                 date_naissance, civilite_inscrit
             ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
@@ -86,6 +90,19 @@ router.post('/signup', async (req, res) => {
                 id_abonnement || null,
                 date_naissance,
                 civilite_inscrit
+=======
+                telephone_inscrit, mdp_inscrit, type_inscrit, id_abonnement
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+            [
+                email_inscrit, // $1 : Email unique.
+                nom_inscrit, // $2 : Nom.
+                prenom_inscrit, // $3 : Prénom.
+                adresse_inscrit, // $4 : Adresse.
+                telephone_inscrit, // $5 : Téléphone.
+                hashedPassword, // $6 : Mot de passe haché.
+                type_inscrit || 'client', // $7 : Type, par défaut 'client' si non fourni (opérateur || pour fallback).
+                id_abonnement || null, // $8 : ID abonnement, null si non fourni.
+>>>>>>> f7ff712dda30f821a846590a99df5e3672116ff1
             ]
         );
 
