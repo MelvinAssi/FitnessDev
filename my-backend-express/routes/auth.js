@@ -18,11 +18,16 @@ require('dotenv').config();
 const router = express.Router();
 
 // Route POST /auth/signup : Crée un nouvel utilisateur dans la base.
-router.post('/signup', async (req, res) => {
+router.post('/signup', [
+    body('email_inscrit').isEmail().withMessage('Email invalide'),
+    body('mdp_inscrit').isLength({ min: 8 }).withMessage('Mot de passe trop court'),
+], async (req, res) => {
     try {
-        // Utilise la déstructuration pour extraire les champs du corps de la requête (req.body).
-        // req.body contient les données envoyées par le frontend (ex. : via un formulaire).
-        // Exemple : { email_inscrit: "jean.dupont@example.com", nom_inscrit: "Dupont", ... }.
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ error: errors.array()[0].msg });
+        }
+
         const {
             email_inscrit,
             nom_inscrit,
@@ -32,61 +37,26 @@ router.post('/signup', async (req, res) => {
             mdp_inscrit,
             type_inscrit,
             id_abonnement,
-<<<<<<< HEAD
-<<<<<<< HEAD
             date_naissance,
             civilite_inscrit,
-=======
->>>>>>> f7ff712dda30f821a846590a99df5e3672116ff1
-=======
-            date_naissance,
-            civilite_inscrit,
->>>>>>> melvin_dev
         } = req.body;
 
-        // Vérifie si l'email existe déjà pour éviter les doublons.
-        // pool.query exécute une requête SQL.
-        // Arguments :
-        // - 'SELECT * FROM INSCRIT WHERE email_inscrit = $1' : Requête pour chercher un utilisateur par email.
-        // - [email_inscrit] : Tableau des paramètres, $1 est remplacé par email_inscrit pour éviter les injections SQL.
         const emailCheck = await pool.query(
-            'SELECT * FROM INSCRIT WHERE email_inscrit = $1',
+            'SELECT id_inscrit FROM INSCRIT WHERE email_inscrit = $1',
             [email_inscrit]
         );
-
-        // Vérifie si des lignes sont retournées (rows.length > 0 signifie que l'email existe).
-        // Si oui, renvoie une erreur 400 (Bad Request) avec un message JSON.
         if (emailCheck.rows.length > 0) {
             return res.status(400).json({ error: 'Cet email est déjà utilisé' });
         }
 
-        // Définit le nombre de tours pour le hachage bcrypt.
-        // 10 est un compromis entre sécurité (plus de tours = plus lent à craquer) et performance.
-        const saltRounds = 10;
-
-        // Hache le mot de passe avec bcrypt.hash.
-        // Arguments :
-        // - mdp_inscrit : Le mot de passe brut envoyé par l'utilisateur.
-        // - saltRounds : Nombre de tours pour le hachage.
-        // - await : Attend que le hachage soit terminé (asynchrone).
-        const hashedPassword = await bcrypt.hash(mdp_inscrit, saltRounds);
-
-        // Insère le nouvel utilisateur dans la table INSCRIT.
-        // pool.query exécute la requête SQL.
-        // Arguments :
-        // - INSERT INTO ... : Requête pour insérer les données.
-        // - [...] : Tableau des valeurs à insérer, correspondant aux $1, $2, etc.
-        // - RETURNING * : Retourne toutes les colonnes de la nouvelle ligne insérée.
+        const hashedPassword = await bcrypt.hash(mdp_inscrit, 10);
         const newUser = await pool.query(
             `INSERT INTO INSCRIT (
                 email_inscrit, nom_inscrit, prenom_inscrit, adresse_inscrit,
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> melvin_dev
                 telephone_inscrit, mdp_inscrit, type_inscrit, id_abonnement,
                 date_naissance, civilite_inscrit
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            RETURNING id_inscrit, email_inscrit, nom_inscrit, prenom_inscrit, type_inscrit`,
             [
                 email_inscrit,
                 nom_inscrit,
@@ -94,51 +64,26 @@ router.post('/signup', async (req, res) => {
                 adresse_inscrit,
                 telephone_inscrit,
                 hashedPassword,
-                type_inscrit || 'client', 
+                type_inscrit || 'client',
                 id_abonnement || null,
                 date_naissance,
-                civilite_inscrit
-<<<<<<< HEAD
-=======
-                telephone_inscrit, mdp_inscrit, type_inscrit, id_abonnement
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-            [
-                email_inscrit, // $1 : Email unique.
-                nom_inscrit, // $2 : Nom.
-                prenom_inscrit, // $3 : Prénom.
-                adresse_inscrit, // $4 : Adresse.
-                telephone_inscrit, // $5 : Téléphone.
-                hashedPassword, // $6 : Mot de passe haché.
-                type_inscrit || 'client', // $7 : Type, par défaut 'client' si non fourni (opérateur || pour fallback).
-                id_abonnement || null, // $8 : ID abonnement, null si non fourni.
->>>>>>> f7ff712dda30f821a846590a99df5e3672116ff1
-=======
->>>>>>> melvin_dev
+                civilite_inscrit,
             ]
         );
 
-        // Génère un token JWT pour l'utilisateur nouvellement créé.
-        // jwt.sign crée un token signé.
-        // Arguments :
-        // - { id_inscrit, email_inscrit, type_inscrit } : Payload, données incluses dans le token.
-        // - process.env.JWT_SECRET : Clé secrète pour signer le token.
-        // - { expiresIn: '1h' } : Options, ici le token expire après 1 heure.
         const token = jwt.sign(
-            { id_inscrit: newUser.rows[0].id_inscrit, email_inscrit, type_inscrit },
+            {
+                id_inscrit: newUser.rows[0].id_inscrit,
+                email_inscrit,
+                type_inscrit: type_inscrit || 'client',
+            },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
 
-        // Envoie une réponse HTTP 201 (Created) avec :
-        // - user : Les données de l'utilisateur inséré (newUser.rows[0]).
-        // - token : Le JWT pour authentifier les futures requêtes.
-        // res.status(201) définit le code HTTP.
-        // res.json() envoie les données au format JSON.
         res.status(201).json({ user: newUser.rows[0], token });
     } catch (err) {
-        // En cas d'erreur (ex. : problème DB, JSON malformé), affiche dans la console.
         console.error(err);
-        // Renvoie une erreur 500 (Internal Server Error) avec un message.
         res.status(500).json({ error: 'Erreur serveur' });
     }
 });
