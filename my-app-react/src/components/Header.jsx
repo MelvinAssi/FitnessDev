@@ -188,38 +188,6 @@ const Header = () => {
   );
 
   return (
-<<<<<<< HEAD
-    <>
-      <header style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <HeaderOffer>
-          <p>🔥 Tes 4 premières semaines à 4,99€/semaine + ton sac à dos offert !</p>
-        </HeaderOffer>
-        <HeaderNavbar scrolled={scrolled}>
-          <HeaderNavbarLeft>
-            <ul>
-              <li><Link to="/"><StyledH2 scrolled={scrolled}>Accueil</StyledH2></Link></li>
-              <li><Link to="/Contact"><StyledH2 scrolled={scrolled}>Contact</StyledH2></Link></li>
-              <li><Link to="/subscription"><StyledH2 scrolled={scrolled}>Abonnement</StyledH2></Link></li>
-              <li><Link to="/Produit"><StyledH2 scrolled={scrolled}>Produit</StyledH2></Link></li>
-              <li><Link to="/courses"><StyledH2 scrolled={scrolled}>Cours</StyledH2></Link></li>
-            </ul>
-          </HeaderNavbarLeft>
-          <HeaderNavbarRight>
-            <ul>
-              <li><Link to="/LogIn"><StyledH2 scrolled={scrolled}>Se connecter</StyledH2></Link></li>
-              <li><Link to="/SignUp"><StyledH2 scrolled={scrolled}>S'inscrire</StyledH2></Link></li>
-            </ul>
-          </HeaderNavbarRight>
-          <Separator scrolled={scrolled} />
-          <NavbarRS 
-            size={34}
-            backgroundcolor={scrolled ? '#FFFFFF' : '#000000'}  // Couleur de fond dynamique
-            textcolor={scrolled ? '#000000' : '#FFFFFF'}  // Couleur du texte dynamique
-          />
-        </HeaderNavbar>
-      </header>
-    </>
-=======
     <HeaderContainer >
       <HeaderOffer>
         <p>🔥 Tes 4 premières semaines à 4,99€/semaine + ton sac à dos offert !</p>
@@ -244,7 +212,6 @@ const Header = () => {
         />
       </HeaderNavbar>
     </HeaderContainer>
->>>>>>> melvin_dev
   );
 };
 
