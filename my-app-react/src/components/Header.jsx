@@ -8,13 +8,12 @@ import Button from './Button.jsx';
 import { AuthContext } from '../contexts/AuthContext.jsx';
 import BurgerMenu from './BurgerMenu.jsx';
 
-
 const HeaderContainer = styled.header`
   display: flex;
   flex-direction: column;
   align-items: center;
-
 `;
+
 const HeaderOffer = styled.div`
   z-index: 1100;
   background-color: #ae2119;
@@ -104,8 +103,6 @@ const Separator = styled.div.withConfig({
   margin: 0 10px;
 `;
 
-
-
 const Header = () => {
   const navigate = useNavigate();
   const { user, logout } = useContext(AuthContext);
@@ -114,19 +111,19 @@ const Header = () => {
 
   const handleClick = (page) => {
     navigate(page);
-    setMenuOpen(false); 
+    setMenuOpen(false);
   };
 
   const LogOut = async () => {
     try {
       await logout();
       navigate('/');
-      setMenuOpen(false)
+      setMenuOpen(false);
     } catch (error) {
       console.error(error);
     }
   };
-  
+
   const authLinks = user ? (
     <>
       <li>
@@ -137,11 +134,11 @@ const Header = () => {
       <li>
         <Button text="Déconnexion" height="30px" width="90px" onClick={LogOut} />
       </li>
-    </> 
+    </>
   ) : (
     <>
       <li>
-        <Link to="/LogIn">
+        <Link to="/login">
           <StyledH2 scrolled={scrolled}>Se connecter</StyledH2>
         </Link>
       </li>
@@ -150,12 +147,14 @@ const Header = () => {
           text="S'inscrire"
           height="30px"
           width="90px"
-          onClick={() => handleClick('/SignUp')}
+          onClick={() => handleClick('/signup')}
         />
       </li>
     </>
   );
+
   const otherLinks = (
+<<<<<<< HEAD
     <>
           <ul>
             <li>
@@ -189,20 +188,49 @@ const Header = () => {
 
   return (
     <HeaderContainer >
+=======
+    <ul>
+      <li>
+        <Link to="/">
+          <StyledH2 scrolled={scrolled}>Accueil</StyledH2>
+        </Link>
+      </li>
+      <li>
+        <Link to="/contact">
+          <StyledH2 scrolled={scrolled}>Contact</StyledH2>
+        </Link>
+      </li>
+      <li>
+        <Link to="/subscription">
+          <StyledH2 scrolled={scrolled}>Abonnement</StyledH2>
+        </Link>
+      </li>
+      <li>
+        <Link to="/produit">
+          <StyledH2 scrolled={scrolled}>Produit</StyledH2>
+        </Link>
+      </li>
+      <li>
+        <Link to="/courses">
+          <StyledH2 scrolled={scrolled}>Cours</StyledH2>
+        </Link>
+      </li>
+    </ul>
+  );
+
+  return (
+    <HeaderContainer>
+>>>>>>> b7dadfda4ca65a71f24dd18284fb20ab15120905
       <HeaderOffer>
         <p>🔥 Tes 4 premières semaines à 4,99€/semaine + ton sac à dos offert !</p>
       </HeaderOffer>
-      <BurgerMenu/>     
+      <BurgerMenu />
       <HeaderNavbar scrolled={scrolled}>
         <HeaderNavbarLeft>
-          <ul>
-            {otherLinks}
-          </ul>          
+          {otherLinks}
         </HeaderNavbarLeft>
         <HeaderNavbarRight>
-          <ul>
-            {authLinks}
-          </ul>          
+          {authLinks}
         </HeaderNavbarRight>
         <Separator scrolled={scrolled} />
         <NavbarRS
