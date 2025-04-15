@@ -25,4 +25,6 @@ router.get('/profil', authMiddleware, async (req, res) => {
     }
 });
 
+
+
 module.exports = router;

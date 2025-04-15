@@ -1,19 +1,23 @@
 import styled from 'styled-components';
 
 const StyledButton = styled.button`
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+
+  background-color: #9a1b14;
+  color: #ffffff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 12px;
+  width: ${({ width }) => width || 'auto'};
+  height: ${({ height }) => height || 'auto'};
+
   &:hover {
-    background-color: #0056b3;
+    background-color: #000000;
   }
 `;
 
-const Button = ({ children, onClick }) => {
-  return <StyledButton onClick={onClick}>{children}</StyledButton>;
+const Button = ({ text,width,height,onClick }) => {
+  return <StyledButton onClick={onClick} width={width} height={height}>{text}</StyledButton>;
 };
 
 export default Button;

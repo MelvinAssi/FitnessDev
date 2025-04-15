@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const NavbarRSstyle = styled.div`
-  width: ${({ $size }) => ($size * 4) + (5 * 16)}px; 
+  width: 100%;
+  max-width: ${({ $size }) => ($size * 4) + (5 * 16)}px;
   height: ${({ $size }) => $size}px;
 
   ul {
@@ -12,6 +13,8 @@ const NavbarRSstyle = styled.div`
     padding: 0;
     margin: 0;
     justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   li {
@@ -23,6 +26,7 @@ const NavbarRSstyle = styled.div`
     color: ${({ $textcolor }) => $textcolor};
     height: ${({ $size }) => $size}px;
     width: ${({ $size }) => $size}px;
+    overflow: visible;
   }
 
   a {    
@@ -49,7 +53,7 @@ const NavbarRS = ({ size, backgroundcolor, textcolor }) => {
     <NavbarRSstyle 
       $size={size} 
       $backgroundcolor={backgroundcolor} 
-      $textcolor={textcolor}  // Assurez-vous que cette prop est correctement passée
+      $textcolor={textcolor}
     >
       <ul>
         <li>
