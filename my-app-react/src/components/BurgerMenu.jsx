@@ -169,7 +169,7 @@ const otherLinks = (
               </Link>
             </li>
             <li>
-              <Link to="/Cours" onClick={() => setMenuOpen(false)}>
+              <Link to="/courses" onClick={() => setMenuOpen(false)}>
                 <StyledH2 >Cours</StyledH2>
               </Link>
             </li>

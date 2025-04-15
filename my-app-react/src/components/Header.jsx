@@ -179,7 +179,7 @@ const Header = () => {
               </Link>
             </li>
             <li>
-              <Link to="/Cours">
+              <Link to="/courses">
                 <StyledH2 scrolled={scrolled}>Cours</StyledH2>
               </Link>
             </li>
