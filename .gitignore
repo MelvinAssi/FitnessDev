@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 .env
+.vite/
+node_modules/
+!node_modules/package-lock.json

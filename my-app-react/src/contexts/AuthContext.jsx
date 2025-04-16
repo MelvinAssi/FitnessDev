@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState ,useEffect} from 'react';
 import axios from "../services/axios.js";
 import { jwtDecode } from "jwt-decode";
 
@@ -8,7 +8,29 @@ export const AuthProvider = (props) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
 
-  const signup =async(data)=>{
+  
+  useEffect(() => { 
+      const localToken = localStorage.getItem('token');
+      if(localToken){
+        const testToken = async () => {
+          try {
+            const profil = await fetchprofil();
+            const decodedUser = jwtDecode(localToken);
+            setUser(decodedUser);
+            setToken(localToken);
+            console.log('Profil:', profil);
+          } catch (error) {
+            logout();
+          }
+        };
+        testToken();
+      }
+  }, []);
+  
+
+
+
+  const signup =async(data,recaptchaToken)=>{
     console.log(data)
     try{
       const response = await axios.post('/auth/signup', {
@@ -19,9 +41,14 @@ export const AuthProvider = (props) => {
         adresse_inscrit: data.adress,
         telephone_inscrit: data.phone,        
         type_inscrit: "client",
-        id_abonnement: null
+        id_abonnement: null,
+        date_naissance :data.birthday,
+        civilite_inscrit: data.civilite,
+        recaptchaToken
       });
       const { token } = response.data;
+      const decodedUser = jwtDecode(token);
+      setUser(decodedUser);
       localStorage.setItem('token', token);
     }catch{
       console.error('Signup error:', error.response?.data?.message || error.message);
@@ -29,18 +56,18 @@ export const AuthProvider = (props) => {
     }
   }
 
-  const login = async (email, password) => {
+  const login = async (email, password ,recaptchaToken) => {
     try {
       const response = await axios.post('/auth/login', {
         email_inscrit: email,
         mdp_inscrit: password,
+        recaptchaToken
       });
       const { token } = response.data;
       localStorage.setItem('token', token);
       
       const decodedUser = jwtDecode(token);
       setUser(decodedUser);
-      console.log(decodedUser);
 
       return response.data;
     } catch (error) {
@@ -52,6 +79,15 @@ export const AuthProvider = (props) => {
     setUser(null);
     setToken(null);
     localStorage.removeItem('token');
+  };
+  const fetchprofil = async () => {
+    try {
+      const response = await axios.get('/user/profil');
+      return response.data.user;
+    } catch (error) {
+      console.error('Erreur fetchprofil:', error.response?.data?.message || error.message);
+      throw error;
+    }
   };
 
   return (
