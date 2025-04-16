@@ -48,6 +48,21 @@ const Button = styled.button`
     background-color: #000000;
   }
 `;
+const ReCAPTCHACenterWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x:visible;
+  div{
+    overflow-x:visible;
+  }
+  @media (max-width: 768px) {
+    margin-top: 15px;
+  }
+`;
 const SignUpPage = () => {
     const { signup } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -58,8 +73,19 @@ const SignUpPage = () => {
             inputs.current.push(el);
         }
     };
+    const [recaptchaToken, setRecaptchaToken] = useState(null);
+    const recaptchaRef = useRef();
+    const handleRecaptchaChange = (token) => {
+        setRecaptchaToken(token);
+    };
+
+
     const handleForm = async (e) => {
         e.preventDefault();
+        if (!recaptchaToken) {
+            alert('Veuillez valider le reCAPTCHA.');
+            return;
+        }
 
         const data = {
             civilite: inputs.current[0]?.value,
@@ -76,7 +102,7 @@ const SignUpPage = () => {
             return alert("Les adresses e-mail ne correspondent pas.");
         }
         try {
-          await signup(data);
+          await signup(data,recaptchaToken);
           navigate('/'); 
         } catch (error) {
           alert('signup failed');
@@ -153,11 +179,16 @@ const SignUpPage = () => {
                         aria-label="Entrez votre adresse"
                     />
                 
-                    <ReCAPTCHA
-                        sitekey="6LdNwBArAAAAAPUVKb7yL-hQF-1I2AJDPvhDrCqA"
-                    />
+                    <ReCAPTCHACenterWrapper>
+                        <ReCAPTCHA
+                            ref={recaptchaRef}
+                            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                            onChange={handleRecaptchaChange}
+                            size="normal"
+                        />
+                    </ReCAPTCHACenterWrapper>
                     <div>                            
-                        <Button type="submit">JE CONFIRME</Button>
+                        <Button type="submit" disabled={!recaptchaToken}>JE CONFIRME</Button>
                     </div>  
                 </Form>
             </main>

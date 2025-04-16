@@ -1,9 +1,8 @@
-import React, { useRef, useState, useContext } from "react";
+import { useRef, useState, useContext } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import styled from "styled-components";
 import ReCAPTCHA from 'react-google-recaptcha';
-
 
 const FormContainer = styled.div`
   display: flex;
@@ -35,9 +34,6 @@ const Form = styled.form`
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: auto;
-
-  @media (max-width: 768px) {
-  }
 `;
 
 const InputContainer = styled.div`
@@ -94,21 +90,24 @@ const ReCAPTCHACenterWrapper = styled.div`
   margin-top: 20px;
   width: 100%;
   box-sizing: border-box;
-
+  overflow-x:visible;
+  div{
+    overflow-x:visible;
+  }
   @media (max-width: 768px) {
     margin-top: 15px;
   }
 `;
 
 const LoginPage = () => {
-  const [recaptchaValue, setRecaptchaValue] = useState(null);
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
   const formRef = useRef();
   const inputs = useRef([]);
-
+  const recaptchaRef = useRef();
   const handleRecaptchaChange = (value) => {
-    setRecaptchaValue(value);
+    setRecaptchaToken(value);
     console.log("ReCAPTCHA value: ", value);
   };
 
@@ -120,12 +119,18 @@ const LoginPage = () => {
 
   const handleForm = async (e) => {
     e.preventDefault();
+    if (!recaptchaToken) {
+      alert('Veuillez valider le reCAPTCHA.');
+      return;
+    }
     try {
-      await login(inputs.current[0].value, inputs.current[1].value);
+      await login(inputs.current[0].value, inputs.current[1].value, recaptchaToken);
       navigate('/');
     } catch (error) {
-      alert('Login failed');
+      alert('Échec de la connexion');
     }
+    setRecaptchaToken(null);
+    recaptchaRef.current.reset();
   };
 
   return (
@@ -156,19 +161,18 @@ const LoginPage = () => {
               />
             </div>
             <ReCAPTCHACenterWrapper>
-                <ReCAPTCHA
-                sitekey="6LdNwBArAAAAAPUVKb7yL-hQF-1I2AJDPvhDrCqA"
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
                 onChange={handleRecaptchaChange}
-                />
+                size="normal"
+              />
             </ReCAPTCHACenterWrapper>
             <div>
-              <Button type="submit">Se Connecter</Button>
+              <Button type="submit" disabled={!recaptchaToken}>Se Connecter</Button>
             </div>
           </InputContainer>
-
-
         </Form>
-
         <p>
           Tu n'as pas encore de compte ? <Link to="/signup" className="signup-link">M'inscrire maintenant</Link>
         </p>
