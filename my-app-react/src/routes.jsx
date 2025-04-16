@@ -6,18 +6,22 @@ import SignUpPage from './pages/SignUpPage/SignUpPage.jsx';
 import SubscriptionPage from './pages/SubscriptionPage/SubscriptionPage.jsx';
 import CoursePage from './pages/CoursePage/CoursePage';
 import CourseSelectionPage from './pages/CourseSelectionPage/CourseSelectionPage';
+import ScrollToTop from './components/ScrollToTop.jsx';
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/contact" element={<ContactPage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignUpPage />} />
-      <Route path="/subscription" element ={<SubscriptionPage />} />
-      <Route path='/courses' element={<CoursePage />} />
-      <Route path='/course-selection' element={<CourseSelectionPage />} />
-    </Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/subscription" element ={<SubscriptionPage />} />
+        <Route path='/courses' element={<CoursePage />} />
+        <Route path='/course-selection' element={<CourseSelectionPage />} />
+      </Routes>
+    </>
   );
 };
 

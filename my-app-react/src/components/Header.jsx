@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import NavbarRS from './NavbarRS.jsx';
 import useScroll from '../hooks/useScroll.jsx';
 import Button from './Button.jsx';
 import { AuthContext } from '../contexts/AuthContext.jsx';
@@ -50,7 +49,7 @@ const HeaderNavbar = styled.div.withConfig({
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.6vw;
+    gap: 10px;
     list-style: none;
   }
 
@@ -66,6 +65,17 @@ const HeaderNavbar = styled.div.withConfig({
   @media (max-width: 768px) {
     display: none;
   }
+`;
+const Panier = styled.i.withConfig({
+  shouldForwardProp: (prop) => prop !== 'scrolled',
+})`
+  display:flex ;
+  margin-top: 10px;
+  height :30px;
+  align-self: center;
+  font-size:20px;
+  color: ${({ scrolled }) => (scrolled ? '#ffffff' : '#000000')};
+  cursor: pointer;
 `;
 
 const HeaderNavbarLeft = styled.div.withConfig({
@@ -89,7 +99,7 @@ const HeaderNavbarRight = styled.div.withConfig({
 const StyledH2 = styled.h2.withConfig({
   shouldForwardProp: (prop) => prop !== 'scrolled',
 })`
-  font-size: 1.2vw;
+  font-size: 14px;
   color: ${({ scrolled }) => (scrolled ? '#ffffff' : '#000000')};
   transition: color 0.3s ease;
 `;
@@ -107,18 +117,15 @@ const Header = () => {
   const navigate = useNavigate();
   const { user, logout } = useContext(AuthContext);
   const scrolled = useScroll();
-  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleClick = (page) => {
     navigate(page);
-    setMenuOpen(false);
   };
 
   const LogOut = async () => {
     try {
       await logout();
       navigate('/');
-      setMenuOpen(false);
     } catch (error) {
       console.error(error);
     }
@@ -126,101 +133,76 @@ const Header = () => {
 
   const authLinks = user ? (
     <>
-      <li>
-        <Link to="/profil">
-          <StyledH2 scrolled={scrolled}>Profil</StyledH2>
-        </Link>
-      </li>
-      <li>
-        <Button text="Déconnexion" height="30px" width="90px" onClick={LogOut} />
-      </li>
+      <ul>
+        <li>
+          <Link to="/profil" aria-label="Aller à la page profil">
+            <StyledH2 scrolled={scrolled}>Profil</StyledH2>
+          </Link>
+        </li>
+        <li>
+          <Button
+            text="Déconnexion"
+            height="30px"
+            width="90px"
+            onClick={LogOut}
+            aria-label="Se déconnecter"
+          />
+        </li>
+      </ul>
     </>
   ) : (
     <>
-      <li>
-        <Link to="/login">
-          <StyledH2 scrolled={scrolled}>Se connecter</StyledH2>
-        </Link>
-      </li>
-      <li>
-        <Button
-          text="S'inscrire"
-          height="30px"
-          width="90px"
-          onClick={() => handleClick('/signup')}
-        />
-      </li>
+      <ul>
+        <li>
+          <Link to="/login" aria-label="Aller à la page de connexion">
+            <StyledH2 scrolled={scrolled}>Se connecter</StyledH2>
+          </Link>
+        </li>
+        <li>
+          <Button
+            text="S'inscrire"
+            height="30px"
+            width="90px"
+            onClick={() => handleClick('/signup')}
+            aria-label="S'inscrire à un compte"
+          />
+        </li>
+      </ul>
     </>
   );
-
+  
   const otherLinks = (
-<<<<<<< HEAD
-    <>
-          <ul>
-            <li>
-              <Link to="/">
-                <StyledH2 scrolled={scrolled}>Accueil</StyledH2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/Contact">
-                <StyledH2 scrolled={scrolled}>Contact</StyledH2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/subscription">
-                <StyledH2 scrolled={scrolled}>Abonnement</StyledH2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/Produit">
-                <StyledH2 scrolled={scrolled}>Produit</StyledH2>
-              </Link>
-            </li>
-            <li>
-              <Link to="/courses">
-                <StyledH2 scrolled={scrolled}>Cours</StyledH2>
-              </Link>
-            </li>
-          </ul>
-        </>
-  );
-
-  return (
-    <HeaderContainer >
-=======
     <ul>
       <li>
-        <Link to="/">
+        <Link to="/" aria-label="Aller à l'accueil">
           <StyledH2 scrolled={scrolled}>Accueil</StyledH2>
         </Link>
       </li>
       <li>
-        <Link to="/contact">
+        <Link to="/contact" aria-label="Aller à la page contact">
           <StyledH2 scrolled={scrolled}>Contact</StyledH2>
         </Link>
       </li>
       <li>
-        <Link to="/subscription">
+        <Link to="/subscription" aria-label="Voir les abonnements">
           <StyledH2 scrolled={scrolled}>Abonnement</StyledH2>
         </Link>
       </li>
       <li>
-        <Link to="/produit">
+        <Link to="/produit" aria-label="Voir les produits">
           <StyledH2 scrolled={scrolled}>Produit</StyledH2>
         </Link>
       </li>
       <li>
-        <Link to="/courses">
+        <Link to="/courses" aria-label="Voir les cours">
           <StyledH2 scrolled={scrolled}>Cours</StyledH2>
         </Link>
       </li>
     </ul>
   );
-
+  
   return (
     <HeaderContainer>
->>>>>>> b7dadfda4ca65a71f24dd18284fb20ab15120905
       <HeaderOffer>
         <p>🔥 Tes 4 premières semaines à 4,99€/semaine + ton sac à dos offert !</p>
       </HeaderOffer>
@@ -229,15 +211,16 @@ const Header = () => {
         <HeaderNavbarLeft>
           {otherLinks}
         </HeaderNavbarLeft>
+
+        <Link to="/panier" aria-label="Voir le panier">
+          <Panier className="fas fa-shopping-cart" scrolled={scrolled}></Panier>
+        </Link>
+        <Separator scrolled={scrolled} />
+
         <HeaderNavbarRight>
           {authLinks}
-        </HeaderNavbarRight>
-        <Separator scrolled={scrolled} />
-        <NavbarRS
-          size={34}
-          backgroundcolor={scrolled ? '#ffffff' : '#000000'}
-          textcolor={scrolled ? '#000000' : '#ffffff'}
-        />
+        </HeaderNavbarRight>  
+
       </HeaderNavbar>
     </HeaderContainer>
   );

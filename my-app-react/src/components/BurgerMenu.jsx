@@ -5,7 +5,7 @@ import MenuIcon from '../assets/icons/menu.svg?react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext.jsx';
 import Button from './Button.jsx';
-import NavbarRS from './NavbarRS.jsx';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 
 const StyledH2 = styled.h2`
@@ -99,10 +99,22 @@ const BurgerHeader = styled.div.withConfig({
     display: none; 
   }
 `;
+const Panier = styled.i`
+
+  display:flex ;
+  margin-top: 10px;
+  height :30px;
+  align-self: center;
+  font-size:20px;
+  color: #ffffff;
+  cursor: pointer;
+  
+`;
 const BurgerMenu =()=>{
     const scrolled = useScroll();
     const [menuOpen, setMenuOpen] = useState(false);
     const {user,logout} = useContext(AuthContext);
+    const navigate = useNavigate();
     const LogOut = async () => {
         try {
           await logout();
@@ -140,7 +152,7 @@ const BurgerMenu =()=>{
                 text="S'inscrire"
                 height="30px"
                 width="90px"
-                onClick={() => handleClick('/SignUp')}
+                onClick={() => handleClick('/signup')}
             />
         </li>
         </>
@@ -181,7 +193,14 @@ const otherLinks = (
         <>      
             <BurgerHeader scrolled={scrolled}>
                 <BurgerIcon onClick={() => setMenuOpen(!menuOpen)}  />
+                  <ul style={{display: "flex",flexDirection:"row" ,gap: "10px"}}>
+                    {authLinks}
+                  </ul>
+                <Link to="/panier" aria-label="Voir le panier" style={{textDecoration: "none"}}  >
+                  <Panier className="fas fa-shopping-cart"></Panier>
+                </Link>
             </BurgerHeader>
+
             <BurgerMenuContainer isOpen={menuOpen} scrolled={scrolled}>
                 <ul>
                     {otherLinks}
