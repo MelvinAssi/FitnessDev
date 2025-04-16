@@ -11,6 +11,7 @@ const PanierContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-top: 15%;
 `;
 
 const CartItem = styled.div`
@@ -51,12 +52,19 @@ const ItemDescription = styled.p`
   line-height: 1.4;
 `;
 
+const ItemPrice = styled.p`
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+`;
+
 const DecorativeBar = styled.div`
   width: 50px;
   height: 8px;
   background-color: #d3d3d3;
   border-radius: 4px;
-  margin-top: 5px;
+  margin: 5px 0;
 `;
 
 const QuantityContainer = styled.div`
@@ -103,6 +111,43 @@ const AddIcon = styled.div`
   color: #666;
 `;
 
+const SummarySection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #d3d3d3;
+  border-radius: 8px;
+`;
+
+const ThinLine = styled.hr`
+  border: none;
+  border-top: 1px solid #d3d3d3;
+  margin: 20px 0;
+`;
+
+const TotalText = styled.p`
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+`;
+
+const ValiderButton = styled.button`
+  background-color: #000000;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+`;
+
+const ValiderText = styled.span`
+  color: #ff0000;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+`;
+
 const Panier = () => {
   const { cartItems, addToCart } = useContext(CartContext) || { cartItems: [], addToCart: () => {} };
   const navigate = useNavigate();
@@ -113,18 +158,33 @@ const Panier = () => {
   }, [cartItems]);
 
   const handleQuantityChange = (itemId, newQuantity) => {
-    if (newQuantity < 1) return; // Prevent quantity from going below 1
-
-    // Update the cart item quantity
-    const updatedItems = cartItems.map((item) =>
-      item.id === itemId ? { ...item, quantity: newQuantity } : item
-    );
-    addToCart(updatedItems);
+    if (newQuantity < 1) {
+      // Remove the item from the cart if quantity is less than 1
+      const updatedItems = cartItems.filter((item) => item.id !== itemId);
+      addToCart(updatedItems);
+    } else {
+      // Update the cart item quantity
+      const updatedItems = cartItems.map((item) =>
+        item.id === itemId ? { ...item, quantity: newQuantity } : item
+      );
+      addToCart(updatedItems);
+    }
   };
 
   const handleAddMoreItems = () => {
-    navigate('/'); // Redirect to Produit page
+    console.log('Navigating to Produit page');
+    navigate('/produit', { replace: false }); // Correct navigation to /produit
   };
+
+  const handleValidate = () => {
+    console.log('Valider button clicked');
+    // Add validation logic here (e.g., navigate to checkout, save cart, etc.)
+  };
+
+  // Calculate total sum
+  const totalSum = cartItems.reduce((total, item) => {
+    return total + (item.price * (item.quantity || 1));
+  }, 0);
 
   // Ensure cartItems is an array
   if (!Array.isArray(cartItems)) {
@@ -141,6 +201,7 @@ const Panier = () => {
     );
   }
 
+  console.log('Rendering Panier page'); // Debugging
   return (
     <PanierContainer>
       {cartItems.length === 0 ? (
@@ -170,6 +231,7 @@ const Panier = () => {
                     "Nos manchons de compression en néoprène peuvent aider à réduire les tensions, les douleurs et l'inconfort au niveau du genou sans limiter l'amplitude de vos mouvements."}
                 </ItemDescription>
                 <DecorativeBar />
+                <ItemPrice>€{(item.price * (item.quantity || 1)).toFixed(2)}</ItemPrice>
               </ItemDetails>
               <QuantityContainer>
                 <QuantityButton
@@ -191,6 +253,14 @@ const Panier = () => {
       <EmptyBlock onClick={handleAddMoreItems}>
         <AddIcon>+</AddIcon>
       </EmptyBlock>
+      <ThinLine />
+      <SummarySection>
+        <TotalText>Total: €{totalSum.toFixed(2)}</TotalText>
+        <ValiderButton onClick={handleValidate}>
+          <ValiderText>VALIDER</ValiderText>
+        </ValiderButton>
+      </SummarySection>
+      <ThinLine />
     </PanierContainer>
   );
 };
