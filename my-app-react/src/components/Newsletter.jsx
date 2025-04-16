@@ -9,7 +9,8 @@ const NewsletterContainer = styled.div`
   flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
-  background-color :#ffffff;
+  background-color :#000000;
+  color:#ffffff;
 
   @media (max-width: 768px) {
     flex-direction: column; 

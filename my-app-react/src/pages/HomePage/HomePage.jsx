@@ -6,6 +6,7 @@ import fd_homepage3 from "../../assets/images/fd_homepage3.jpg";
 
 import styled from 'styled-components';
 import Carousel from "../../components/Carousel";
+import Avis from "../../components/Avis";
 
 const Section = styled.div`
   background-image: ${({ bgimage }) => `url(${bgimage})`};
@@ -67,6 +68,9 @@ const HomePage = () => {
       <Section style={{flexDirection : "column",backgroundColor:"#000000"}}>
           <h1 style={{color :"#ffffff"}}>Notre Salle</h1>
           <Carousel ></Carousel>
+      </Section>
+      <Section>
+        <Avis></Avis>
       </Section>
     </main>
   );
