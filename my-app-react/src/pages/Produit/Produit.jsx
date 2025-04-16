@@ -1,6 +1,7 @@
 import React, { useState, useContext, createContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { CartContext } from '../../contexts/CartContext';
 
 // Import images from the asset folder
 import fitness from "../../assets/images/fitness.webp";
@@ -8,8 +9,6 @@ import blue_hoodie from "../../assets/images/blue_hoodie.png";
 import cut_offs from "../../assets/images/cut_offs.jpg";
 import leggings_black from "../../assets/images/leggings_black.webp";
 
-// Create Cart Context
-export const CartContext = createContext();
 
 const products = [
   { id: 1, name: "Leggings de femme - Black", price: 5.99, image: leggings_black },
@@ -156,31 +155,7 @@ const ProductItem = ({ name, price: basePrice, image, id }) => {
 };
 
 const Produit = () => {
-  const [cartItems, setCartItems] = useState([]);
-
-  const addToCart = (item) => {
-    if (Array.isArray(item)) {
-      setCartItems(item); // Update the entire cartItems array (used by Panier.jsx)
-    } else {
-      // Check if the item already exists in the cart
-      const existingItemIndex = cartItems.findIndex((cartItem) => cartItem.id === item.id);
-      if (existingItemIndex !== -1) {
-        // Update quantity if item exists
-        const updatedItems = [...cartItems];
-        updatedItems[existingItemIndex] = {
-          ...updatedItems[existingItemIndex],
-          quantity: updatedItems[existingItemIndex].quantity + item.quantity,
-        };
-        setCartItems(updatedItems);
-      } else {
-        // Add new item to cart
-        setCartItems([...cartItems, item]);
-      }
-    }
-  }
-
-  return (
-    <CartContext.Provider value={{ cartItems, addToCart }}>
+    return (
       <MainContainer>
         <GridContainer>
           {products.map(product => (
@@ -194,8 +169,7 @@ const Produit = () => {
           ))}
         </GridContainer>
       </MainContainer>
-    </CartContext.Provider>
-  );
-};
+    );
+  };
 
 export default Produit;

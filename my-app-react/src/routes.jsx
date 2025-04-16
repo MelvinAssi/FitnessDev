@@ -6,6 +6,7 @@ import SignUpPage from './pages/SignUpPage/SignUpPage.jsx';
 import SubscriptionPage from './pages/SubscriptionPage/SubscriptionPage.jsx';
 import Produit from './pages/Produit/Produit.jsx';
 import Panier from './pages/Panier/Panier.jsx';
+import CartWrapper from './components/CartWrapper.jsx';
 
 const AppRoutes = () => {
   return (
@@ -14,9 +15,23 @@ const AppRoutes = () => {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignUpPage />} />
-      <Route path="/produit" element={<Produit />} />
       <Route path="/subscription" element ={<SubscriptionPage />} />
-      <Route path="/panier" element ={<Panier />} />
+      <Route
+        path="/produit"
+        element={
+          <CartWrapper>
+            <Produit />
+          </CartWrapper>
+        }
+      />
+      <Route
+        path="/panier"
+        element={
+          <CartWrapper>
+            <Panier />
+          </CartWrapper>
+        }
+      />
     </Routes>
   );
 };

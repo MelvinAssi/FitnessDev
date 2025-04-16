@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { CartContext } from '../Produit/Produit.jsx';
+import { CartContext } from '../../contexts/CartContext';
 
 // Styled components for Panier page
 const PanierContainer = styled.div`
