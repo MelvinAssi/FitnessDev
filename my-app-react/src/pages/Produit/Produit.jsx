@@ -56,7 +56,7 @@ const StyledImg = styled.img`
 
 const ContentWrapper = styled.div`
   padding: 8px;
-  margin-top: 5%;
+  margin-top: 5%; 
 `;
 
 const ProductName = styled.h3`
