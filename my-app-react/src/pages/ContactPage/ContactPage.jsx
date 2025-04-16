@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, {useState, useRef } from "react";
 import styled from 'styled-components';
 import ButtonInputAdd from "../../components/ButtonInputAdd";
 
@@ -77,17 +77,35 @@ const HorizontalGroup = styled.div`
   display: flex;
   gap: 20px;
   width: 100%;
+
+  & > div {
+    width: 50%;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    & > div {
+      width: 100%;
+    }
+  }
 `;
 
 
 const ContactPage = () => {
   const inputs = useRef([]);
   const formRef = useRef();
+  const [messageEnvoye, setMessageEnvoye] = useState(false);
 
   const addInputs = (el) => {
     if (el && !inputs.current.includes(el)) {
       inputs.current.push(el);
     }
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setMessageEnvoye(true);
+    formRef.current.reset();
+    setTimeout(() => setMessageEnvoye(false), 5000);
   };
 
   return (
@@ -95,9 +113,15 @@ const ContactPage = () => {
       <main style={{minHeight:"100vh", paddingTop: '124px' }}>        
         <FormContainer>
           <FormTitle>CONTACTEZ-NOUS</FormTitle>
-          <Form id="contact-form" ref={formRef}>
+          
+          {messageEnvoye && (
+            <p style={{ color: "#9a1b14", fontWeight: "bold" }}>
+              ✅ Votre message a bien été envoyé !
+            </p>
+          )}
+          <Form onSubmit={handleSubmit} ref={formRef}>
             <HorizontalGroup>
-              <div style={{ width: "50%" }}>
+              <div>
                 <Input
                   ref={addInputs}
                   type="text"
@@ -107,7 +131,7 @@ const ContactPage = () => {
                   aria-label="Entrer votre nom"
                 />
               </div>
-              <div style={{ width: "50%" }}>
+              <div >
                 <Input
                   ref={addInputs}
                   type="text"
@@ -120,7 +144,7 @@ const ContactPage = () => {
             </HorizontalGroup>
 
             <HorizontalGroup>
-              <div style={{ width: "50%" }}>
+              <div >
                 <Input
                   ref={addInputs}
                   type="email"
@@ -130,12 +154,12 @@ const ContactPage = () => {
                   aria-label="Entrer votre adresse email"
                 />
               </div>
-              <div style={{ width: "50%" }}>
-                <Select ref={addInputs} id="Request_type" name="Request_type" required>
-                  <option value="">--Sélectionner votre service--</option>
-                  <option value="Paiement">Paiement</option>
-                  <option value="Connexion">Connexion</option>
-                </Select>
+              <div >
+              <Select id="service" name="Request_type" required>
+                <option value="">--Sélectionner votre service--</option>
+                <option value="Paiement">Paiement</option>
+                <option value="Connexion">Connexion</option>
+              </Select>
               </div>
             </HorizontalGroup>
 
