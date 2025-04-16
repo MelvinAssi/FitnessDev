@@ -6,6 +6,7 @@ import SignUpPage from './pages/SignUpPage/SignUpPage.jsx';
 import SubscriptionPage from './pages/SubscriptionPage/SubscriptionPage.jsx';
 import CoursePage from './pages/CoursePage/CoursePage';
 import CourseSelectionPage from './pages/CourseSelectionPage/CourseSelectionPage';
+import ProfilePage from './pages/ProfilePage';
 import ScrollToTop from './components/ScrollToTop.jsx';
 
 const AppRoutes = () => {
@@ -20,6 +21,7 @@ const AppRoutes = () => {
         <Route path="/subscription" element ={<SubscriptionPage />} />
         <Route path='/courses' element={<CoursePage />} />
         <Route path='/course-selection' element={<CourseSelectionPage />} />
+        <Route path="/profil" element={<ProfilePage />} />
       </Routes>
     </>
   );
