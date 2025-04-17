@@ -4,6 +4,18 @@ import { AuthContext } from '../contexts/AuthContext.jsx';
 import { db, doc, setDoc, collection, getDocs } from '../firebase.js';
 import Modal from 'react-modal';
 
+
+const ReviewContainer = styled.div`
+  display: flex;
+  overflow-x: auto;
+  padding: 10px 0;
+  scroll-snap-type: x mandatory;
+  gap: 16px;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+`;
 const Button = styled.button`
   width: 50%;
   max-width: 200px;
@@ -70,11 +82,7 @@ const ReviewCard = styled.div`
   }
 `;
 
-const ModalContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+
 
 const ModalTitle = styled.h2`
   font-size: 22px;
@@ -138,7 +146,7 @@ const Avis = () => {
   return (
     <div style={{ color: "#000000" }}>
       <h1>Les avis de nos abonnés</h1>
-      <div style={{ display: 'flex', overflowX: 'auto', padding: '10px 0' }}>
+      <ReviewContainer>
         {reviews.length > 0 ? (
           reviews.map((review) => (
             <ReviewCard key={review.id}>
@@ -149,7 +157,7 @@ const Avis = () => {
         ) : (
           <p>Aucun avis disponible.</p>
         )}
-      </div>
+      </ReviewContainer>
       {user && (
         <>
           <Button onClick={() => setModalIsOpen(true)}>Donner ton avis</Button>

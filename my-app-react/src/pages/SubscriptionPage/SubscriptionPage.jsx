@@ -1,207 +1,112 @@
 import React from "react";
-import styled from "styled-components";
-import Subscription from "../../components/Subscription.jsx";
-import SubscriptionItem1 from "../../assets/icons/Subscription_Item1.png";
-import SubscriptionItem2 from "../../assets/icons/Subscription_Item2.png";
-import SubscriptionItem3 from "../../assets/icons/Subscription_Item3.png";
-import SubscriptionItem4 from "../../assets/icons/Subscription_Item4.png";
-import SubscriptionItem5 from "../../assets/icons/Subscription_Item5.png";
-import FdEquipment1 from "../../assets/images/fd_equipment1.png";
-import FdEquipment2 from "../../assets/images/fd_equipment2.png";
-import PartenerIcon1 from "../../assets/icons/logo_gym80.png";
-import PartenerIcon2 from "../../assets/icons/logo_hammer.png";
-import PartenerIcon3 from "../../assets/icons/logo_technogym.png";
-import PartenerIcon4 from "../../assets/icons/logo-life-fitness-1.png";
-import PartenerIcon5 from "../../assets/icons/logo_eleiko.png";
+import styled from 'styled-components';
 
+import fd_homepage1 from "../../assets/images/fd_homepage1.jpg";
+import fd_homepage2 from "../../assets/images/fd_homepage2.jpg";
+import fd_homepage3 from "../../assets/images/fd_homepage3.jpg";
+import fd_homepage_responsive1 from "../../assets/images/fd_homepage_responsive1.jpg";
+import fd_homepage_responsive2 from "../../assets/images/fd_homepage_responsive2.jpg";
+import fd_homepage_responsive3 from "../../assets/images/fd_homepage_responsive3.jpg";
 
+import Carousel from "../../components/Carousel";
+import Avis from "../../components/Avis";
 
-const Main = styled.main`
+// === Styled Components ===
+
+const Section = styled.div`
+ 
   min-height: 100vh;
-  padding-top: 124px;
-  padding-bottom: 40px;
-`;
-
-const Title = styled.h1`
-  font-size: 50px;
-  width: 60%;
-  margin: 0 auto;
-  text-align: center;
-`;
-
-const Description = styled.p`
-  font-size: 24px;
-  width: 80%;
-  margin: 20px auto 40px auto;
-  text-align: center;
-`;
-
-const GridContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 30px;
-  margin: 0 40px;
-  justify-items: center;
-  align-items: start;
-`;
-
-
-
-const SectionDark = styled.section`
-  background-color: #000000;
-  color: #ffffff;
-`;
-const EquipmentWrapper = styled.div`
+  background-size: cover;
+  background-position: center;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  gap: 20px;
-  margin: 20px;
-`;
-const EquipmentSectionContent = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
-  align-items: flex-start;
-  padding: 40px;
-  
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding: 20px;
+
+  h1 {
+    font-size: 3rem;
+    margin: 0;
+    font-weight: bold;
+  }
+
+  p {
+    font-size: 1.25rem;
+    margin-top: 10px;
+    max-width: 600px;
+    text-align: center;
+  }
+
   @media (max-width: 768px) {
+    background-image: none;
     flex-direction: column;
     align-items: center;
   }
 `;
 
-const EquipmentText = styled.div`
-  flex: 1;
-  min-width: 300px;
-  h2{
-    font-size:40px
+const ContentBlock = styled.div`
+  width: 50%;
+
+  @media (max-width: 768px) {
+    background-image: ${({ bgMobile }) => `url(${bgMobile})`};
+    background-size: cover;
+    width: 100%;
+    height: 50%;
   }
-  p{
-    font-size:16px;
-  }
 `;
 
-const EquipmentImage = styled.img`
-  width: 80%;
-  border-radius: 10px;
-`;
-const EquipmentImages = styled(EquipmentWrapper)`
-  flex: 1;
-  min-width: 400px;
-  justify-content: center;
-  align-content: center;
-`;
-
-const PartnersWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  margin: 40px;
-`;
-
-const PartnerLogo = styled.img`
-  height: 50px;
-  object-fit: contain;
+const DarkSection = styled(Section)`
+  background-color: #000000;
+  background-image: none;
+  flex-direction: column;
 `;
 
 
+// === Composant principal ===
 
-
-
-const SubscriptionPage = () => {
-  const formulas = [
-    {
-      name: "ESSENTIAL",
-      price: 7.99,
-      options: 2,
-    },
-    {
-      name: "ORIGINAL",
-      price: 9.99,
-      options: 4,
-    },
-    {
-      name: "ULTRA",
-      price: 10.99,
-      options: 5,
-    },
-  ];
-
-  const Options = [
-    { name: "Abonnement sans engagement annuel", img: SubscriptionItem1 },
-    { name: "Accès réseau illimité", img: SubscriptionItem2 },
-    { name: "Fontaine à boissons fruitées", img: SubscriptionItem3 },
-    { name: "Plateforme oscillante**", img: SubscriptionItem4 },
-    { name: "Carte d’abonnement partageable", img: SubscriptionItem5 },
-  ];
-
+const HomePage = () => {
   return (
-    <Main>
-      {/* Section abonnements */}
-      <section>
-        <Title>SÉLECTIONNE L’ABONNEMENT QUI TE CORRESPOND</Title>
-        <Description>
-          Avec plus de 60 clubs partout dans le monde, retrouve : Cardio,
-          Musculation, Cross-training, espace Femme, Boxe et MMA pour effectuer
-          tous tes entraînements ! Découvre nos trois options de forfaits sans
-          engagement annuel, à partir de 7,99€ par semaine ! 🔥
-        </Description>
-        <GridContainer>
-          {formulas.map((formula) => (
-            <Subscription
-              key={formula.name}
-              name={formula.name}
-              price={formula.price}
-              list={Options.slice(0, formula.options)}
-            />
-          ))}
-        </GridContainer>
-      </section>
+    <main>
+      <Section
+        bgDesktop={fd_homepage1}
+        bgMobile={fd_homepage_responsive1}
+        style={{ flexDirection: "column" }}
+      >
+        <h1>DÉPASSE-TOI ET ATTEINS TES OBJECTIFS !</h1>
+        <p>Retrouve ton club FitnessDev le plus proche de 6H à 23H en France</p>
+      </Section>
 
-      {/* Section équipements */}
-      <SectionDark>
-        <Title>SALLES DE SPORT FITNESSDEV</Title>
-        <EquipmentSectionContent>
-            <EquipmentText>
-                <h2>Nos Équipements et Services Uniques</h2>
-                <Description>
-                    Tes salles de sport ON AIR FITNESS sont exclusivement composées de
-                    matériel haut de gamme et connecté des marques TECHNOGYM, HAMMER
-                    STRENGTH, ELEIKO, LIFE FITNESS et GYM 80. Avec des espaces force,
-                    musculation guidée, cardio-training, espace boxing, haltérophilie…
-                    mais aussi un espace dédié aux femmes avec des machines conçues pour
-                    répondre aux besoins spécifiques de nos FITGIRLS.
-                    <br />
-                    Certaines de nos salles de sport te permettent d’accéder à des cours
-                    collectifs, de zumba, yoga, pilates, body pump, RPM, des cours Les
-                    Mills…
-                    <br />
-                    Retrouve une salle de sport ON AIR FITNESS à proximité de chez toi et
-                    découvre les espaces dont dispose ton futur club. Tu peux te rendre
-                    directement sur sa page.
-                    <br />                    
-                    Plus d'excuses, rejoins-nous pour ton entraînement et plonge au
-                    cœur de l'action avec ON AIR FITNESS !
-                    
-                </Description>
-            </EquipmentText>
-            <EquipmentImages>
-                <EquipmentImage src={FdEquipment1} alt="Équipement 1" />
-                <EquipmentImage src={FdEquipment2} alt="Équipement 2" />
-            </EquipmentImages>
-            </EquipmentSectionContent>
-        <PartnersWrapper>
-          <PartnerLogo src={PartenerIcon1} alt="GYM80" />
-          <PartnerLogo src={PartenerIcon2} alt="Hammer Strength" />
-          <PartnerLogo src={PartenerIcon3} alt="Technogym" />
-          <PartnerLogo src={PartenerIcon4} alt="Life Fitness" />
-          <PartnerLogo src={PartenerIcon5} alt="Eleiko" />
-        </PartnersWrapper>
-      </SectionDark>
-    </Main>
+      <Section bgDesktop={fd_homepage2}>
+  <ContentBlock bgMobile={fd_homepage_responsive2} style={{ color: "#000000" }}>
+    <h1>FITNESSDEV CLUBS DE SPORT</h1>
+    <p>Trouve ton club FitnessDev le plus proche et profite d’un accès 7j/7, de 6H à 23H</p>
+    <p>Avec ta carte FitnessDev, tu as accès librement à l'ensemble de nos clubs, ouverts de 6h à 23h* en France, Espagne et dans les DOM-TOM.</p>
+    <p>Non-stop, 7j/7, 365 jours/an, pour t'entraîner, te surpasser et réaliser tes objectifs sans contrainte.</p>
+  </ContentBlock>
+  <ContentBlock bgMobile={fd_homepage_responsive2} />
+</Section>
+
+<Section bgDesktop={fd_homepage3}>
+  <ContentBlock bgMobile={fd_homepage_responsive3} />
+  <ContentBlock bgMobile={fd_homepage_responsive3} style={{ color: "#000000" }}>
+    <h1>+120 000</h1>
+    <h1>D'ADHÉRENTS</h1>
+    <p>Rejoins notre communauté de passionnés qui se dépassent et se surpassent au quotidien pour atteindre leurs objectifs.</p>
+    <p>Inscris-toi dès aujourd'hui et profite de tous les avantages de l’enseigne de fitness préférée des Français.</p>
+  </ContentBlock>
+</Section>
+
+      <DarkSection>
+        <h1 style={{ color: "#ffffff" }}>Notre Salle</h1>
+        <Carousel />
+      </DarkSection>
+
+      <Section>
+        <Avis />
+      </Section>
+    </main>
   );
 };
 
-export default SubscriptionPage;
+export default HomePage;
