@@ -4,6 +4,18 @@ import { AuthContext } from "../../contexts/AuthContext";
 import styled from "styled-components";
 import ReCAPTCHA from 'react-google-recaptcha';
 
+
+
+const Offset= styled.div`
+  display:none;
+  width:100%;
+  height:84px;
+  background-color:#000000;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -11,13 +23,14 @@ const FormContainer = styled.div`
   justify-content: center;
   margin-top: 20px;
   padding: 20px;
+  overflow: visible; 
 
   a {
     color: #000000;
   }
 
   @media (max-width: 768px) {
-    padding: 15px;
+    padding: 10px;
   }
 `;
 
@@ -34,6 +47,12 @@ const Form = styled.form`
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: auto;
+  overflow: visible;
+  position: relative;
+  @media (max-width: 768px) {
+    width: 90%;  
+    padding: 10px;
+  }
 `;
 
 const InputContainer = styled.div`
@@ -58,7 +77,7 @@ const Input = styled.input`
 
   @media (max-width: 768px) {
     width: 100%;
-    padding: 12px;
+    padding: 10px;
     font-size: 14px;
   }
 `;
@@ -134,6 +153,8 @@ const LoginPage = () => {
   };
 
   return (
+    <>
+    <Offset/>
     <main style={{ minHeight: "100vh", paddingTop: '124px' }}>
       <FormContainer>
         <h1>Connexion</h1>
@@ -178,6 +199,7 @@ const LoginPage = () => {
         </p>
       </FormContainer>
     </main>
+    </>
   );
 };
 

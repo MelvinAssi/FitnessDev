@@ -116,10 +116,9 @@ const Newsletter = () => {
         </TextContent>
 
         <Form ref={formRef} onSubmit={handleFormSubmit}>
-          <label htmlFor="email">Adresse e-mail</label>
+          <h1 style={{color:"#000000"}}>Newsletter</h1>
           <Input
             ref={addInputs}
-            id="email"
             type="email"
             placeholder="Adresse e-mail"
             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"

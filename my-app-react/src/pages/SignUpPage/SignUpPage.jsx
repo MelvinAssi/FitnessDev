@@ -5,6 +5,17 @@ import styled from "styled-components";
 import ReCAPTCHA from 'react-google-recaptcha';
 
 
+const Offset= styled.div`
+  display:none;
+  width:100%;
+  height:84px;
+  background-color:#000000;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;
+
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -110,7 +121,9 @@ const SignUpPage = () => {
     };
     return(
         <>
+            <Offset/>
             <main style={{minHeight:"100vh", paddingTop: '124px' }}>
+                <h1>Informations</h1>
                 <Form ref={formRef} onSubmit={handleForm}> 
                     <Select ref={addInputs} required>
                         <option value="">Civilité</option>
