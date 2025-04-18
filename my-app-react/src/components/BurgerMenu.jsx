@@ -204,7 +204,6 @@ const otherLinks = (
             <BurgerMenuContainer isOpen={menuOpen} scrolled={scrolled}>
                 <ul>
                     {otherLinks}
-                    {authLinks}
                 </ul>
             </BurgerMenuContainer>
         </>

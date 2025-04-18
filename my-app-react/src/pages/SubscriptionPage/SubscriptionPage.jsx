@@ -19,21 +19,39 @@ import PartenerIcon5 from "../../assets/icons/logo_eleiko.png";
 const Main = styled.main`
   min-height: 100vh;
   padding-top: 124px;
-  padding-bottom: 40px;
+`;
+const Offset= styled.div`
+  display:none;
+  width:100%;
+  height:84px;
+  background-color:#000000;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
 `;
 
 const Title = styled.h1`
-  font-size: 50px;
+  font-size: 45px;
   width: 60%;
   margin: 0 auto;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 35px;
+    width: 80%;
+  }
 `;
 
 const Description = styled.p`
-  font-size: 24px;
+  font-size: 22px;
   width: 80%;
   margin: 20px auto 40px auto;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 const GridContainer = styled.div`
@@ -43,11 +61,18 @@ const GridContainer = styled.div`
   margin: 0 40px;
   justify-items: center;
   align-items: start;
+  padding-bottom: 60px; 
+
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 
 
 const SectionDark = styled.section`
+  padding-top: 20px;
   background-color: #000000;
   color: #ffffff;
 `;
@@ -64,33 +89,57 @@ const EquipmentSectionContent = styled.div`
   gap: 40px;
   align-items: flex-start;
   padding: 40px;
-  
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 10px;
+  }
+`;
+
+
+const EquipmentText = styled.div`
+  flex: 1;
+  min-width: 300px;
+
+  h2 {
+    font-size: 32px;
+
+    @media (max-width: 768px) {
+      font-size: 24px;
+      text-align: center;
+    }
+  }
+
+  p {
+    font-size: 16px;
+
+    @media (max-width: 768px) {
+      text-align: justify;
+    }
+  }
+`;
+
+const EquipmentImages = styled(EquipmentWrapper)`
+  flex: 1;
+  min-width: 300px;
+  justify-content: center;
+
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
   }
 `;
 
-const EquipmentText = styled.div`
-  flex: 1;
-  min-width: 300px;
-  h2{
-    font-size:40px
-  }
-  p{
-    font-size:16px;
-  }
-`;
-
 const EquipmentImage = styled.img`
-  width: 80%;
+  width: 100%;
+  max-width: 400px;
   border-radius: 10px;
-`;
-const EquipmentImages = styled(EquipmentWrapper)`
-  flex: 1;
-  min-width: 400px;
-  justify-content: center;
-  align-content: center;
+
+  @media (max-width: 768px) {
+    width: 90%;
+    margin-bottom: 20px;
+  }
 `;
 
 const PartnersWrapper = styled.div`
@@ -138,9 +187,11 @@ const SubscriptionPage = () => {
   ];
 
   return (
-    <Main>
+    <>
+    <Offset/>
+    <Main>      
       {/* Section abonnements */}
-      <section>
+      <section style={{paddingBottom:"20px"}}>
         <Title>SÉLECTIONNE L’ABONNEMENT QUI TE CORRESPOND</Title>
         <Description>
           Avec plus de 60 clubs partout dans le monde, retrouve : Cardio,
@@ -201,6 +252,7 @@ const SubscriptionPage = () => {
         </PartnersWrapper>
       </SectionDark>
     </Main>
+    </>
   );
 };
 

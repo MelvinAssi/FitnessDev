@@ -26,7 +26,8 @@ export const AuthProvider = (props) => {
     }
   }, []);
 
-  const signup = async (data) => {
+  const signup = async (data, recaptchaToken) => {
+    console.log(data);
     try {
       const response = await axios.post('/auth/signup', {
         email_inscrit: data.email,
@@ -39,6 +40,7 @@ export const AuthProvider = (props) => {
         id_abonnement: null,
         date_naissance: data.birthday,
         civilite_inscrit: data.civilite,
+        recaptchaToken
       });
       const { token } = response.data;
       const decodedUser = jwtDecode(token);
@@ -50,11 +52,12 @@ export const AuthProvider = (props) => {
     }
   };
 
-  const login = async (email, password) => {
+  const login = async (email, password, recaptchaToken) => {
     try {
       const response = await axios.post('/auth/login', {
         email_inscrit: email,
         mdp_inscrit: password,
+        recaptchaToken
       });
       const { token } = response.data;
       localStorage.setItem('token', token);
@@ -88,7 +91,7 @@ export const AuthProvider = (props) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, signup, login, logout }}>
+    <AuthContext.Provider value={{ user, token, signup, login, logout, fetchprofil }}>
       {props.children}
     </AuthContext.Provider>
   );

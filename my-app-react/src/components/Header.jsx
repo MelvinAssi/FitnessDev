@@ -23,6 +23,9 @@ const HeaderOffer = styled.div`
   align-items: center;
   color: #ffffff;
   font-weight: bold;
+  @media (max-width: 768px) {
+    font-size:12px;
+  }
 `;
 
 const HeaderNavbar = styled.div.withConfig({

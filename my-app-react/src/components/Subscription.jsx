@@ -5,10 +5,10 @@ import { AuthContext } from "../contexts/AuthContext.jsx";
 
 
 
-
 const Container = styled.div`
   background-color: white;
-  width: 320px;
+  width: 100%;
+  max-width: 350px;
   min-height: 400px;
   padding: 20px;
   border-radius: 12px;
@@ -16,9 +16,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap :15px; 
-  margin-bottom: 10px;
-  
+  gap: 15px;
+  margin: 0 auto;
+
+  @media (max-width: 480px) {
+    padding: 15px;
+    max-width: 100%;
+  }
 `;
 
 const Title = styled.h1`

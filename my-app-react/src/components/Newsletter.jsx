@@ -9,7 +9,8 @@ const NewsletterContainer = styled.div`
   flex-wrap: wrap;
   gap: 20px;
   padding: 20px;
-  background-color :#ffffff;
+  background-color :#000000;
+  color:#ffffff;
 
   @media (max-width: 768px) {
     flex-direction: column; 
@@ -115,10 +116,9 @@ const Newsletter = () => {
         </TextContent>
 
         <Form ref={formRef} onSubmit={handleFormSubmit}>
-          <label htmlFor="email">Adresse e-mail</label>
+          <h1 style={{color:"#000000"}}>Newsletter</h1>
           <Input
             ref={addInputs}
-            id="email"
             type="email"
             placeholder="Adresse e-mail"
             pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"

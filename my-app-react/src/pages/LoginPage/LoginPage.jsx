@@ -1,8 +1,19 @@
-import React, { useRef, useState, useContext } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom"; // MODIFICATION: Ajoute useLocation
+import { useRef, useState, useContext } from 'react';
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import styled from "styled-components";
 import ReCAPTCHA from 'react-google-recaptcha';
+
+const Offset = styled.div`
+  display: none;
+  width: 100%;
+  height: 84px;
+  background-color: #000000;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;
 
 const FormContainer = styled.div`
   display: flex;
@@ -11,13 +22,14 @@ const FormContainer = styled.div`
   justify-content: center;
   margin-top: 20px;
   padding: 20px;
+  overflow: visible;
 
   a {
     color: #000000;
   }
 
   @media (max-width: 768px) {
-    padding: 15px;
+    padding: 10px;
   }
 `;
 
@@ -33,8 +45,11 @@ const Form = styled.form`
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   height: auto;
-
+  overflow: visible;
+  position: relative;
   @media (max-width: 768px) {
+    width: 90%;
+    padding: 10px;
   }
 `;
 
@@ -60,7 +75,7 @@ const Input = styled.input`
 
   @media (max-width: 768px) {
     width: 100%;
-    padding: 12px;
+    padding: 10px;
     font-size: 14px;
   }
 `;
@@ -92,29 +107,33 @@ const ReCAPTCHACenterWrapper = styled.div`
   margin-top: 20px;
   width: 100%;
   box-sizing: border-box;
-
+  overflow-x: visible;
+  div {
+    overflow-x: visible;
+  }
   @media (max-width: 768px) {
     margin-top: 15px;
   }
 `;
 
-const ErrorMessage = styled.p` // NOUVEAU: Style pour les erreurs
+const ErrorMessage = styled.p`
   color: red;
   text-align: center;
   margin-top: 10px;
 `;
 
 const LoginPage = () => {
-  const [recaptchaValue, setRecaptchaValue] = useState(null);
-  const [error, setError] = useState(''); // NOUVEAU: Pour afficher les erreurs
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const [error, setError] = useState('');
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
-  const location = useLocation(); // NOUVEAU: Pour lire state.redirectCourse
+  const location = useLocation();
   const formRef = useRef();
   const inputs = useRef([]);
+  const recaptchaRef = useRef();
 
   const handleRecaptchaChange = (value) => {
-    setRecaptchaValue(value);
+    setRecaptchaToken(value);
     console.log("ReCAPTCHA value: ", value);
   };
 
@@ -126,63 +145,74 @@ const LoginPage = () => {
 
   const handleForm = async (e) => {
     e.preventDefault();
+    if (!recaptchaToken) {
+      setError('Veuillez valider le reCAPTCHA.');
+      return;
+    }
     try {
-      await login(inputs.current[0].value, inputs.current[1].value);
-      const redirectCourse = location.state?.redirectCourse; // NOUVEAU: Récupère le cours
+      await login(inputs.current[0].value, inputs.current[1].value, recaptchaToken);
+      const redirectCourse = location.state?.redirectCourse;
       if (redirectCourse) {
-        navigate(`/course-selection/${encodeURIComponent(redirectCourse)}`); // NOUVEAU: Redirige vers le cours
+        navigate(`/course-selection/${encodeURIComponent(redirectCourse)}`);
       } else {
-        navigate('/'); // NOUVEAU: Sinon, va à l’accueil
+        navigate('/');
       }
     } catch (error) {
-      setError('Email ou mot de passe incorrect'); // NOUVEAU: Affiche une erreur
+      setError('Email ou mot de passe incorrect');
     }
+    setRecaptchaToken(null);
+    recaptchaRef.current.reset();
   };
 
   return (
-    <main style={{ minHeight: "100vh", paddingTop: '124px' }}>
-      <FormContainer>
-        <h1>Connexion</h1>
-        <Form ref={formRef} onSubmit={handleForm}>
-          <InputContainer>
-            <div>
-              <Input
-                ref={addInputs}
-                id="login-email"
-                type="email"
-                placeholder="Adresse e-mail"
-                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                required
-                aria-label="Entrez votre adresse email"
-              />
-            </div>
-            <div>
-              <Input
-                ref={addInputs}
-                id="login-password" 
-                type="password"
-                placeholder="Mot de passe"
-                required
-                aria-label="Entrez votre mot de passe"
-              />
-            </div>
-            <ReCAPTCHACenterWrapper>
-              <ReCAPTCHA
-                sitekey="6LdNwBArAAAAAPUVKb7yL-hQF-1I2AJDPvhDrCqA"
-                onChange={handleRecaptchaChange}
-              />
-            </ReCAPTCHACenterWrapper>
-            <div>
-              <Button type="submit">Se Connecter</Button>
-            </div>
-          </InputContainer>
-          {error && <ErrorMessage>{error}</ErrorMessage>} 
-        </Form>
-        <p>
-          Tu n'as pas encore de compte ? <Link to="/signup" className="signup-link">M'inscrire maintenant</Link>
-        </p>
-      </FormContainer>
-    </main>
+    <>
+      <Offset />
+      <main style={{ minHeight: "100vh", paddingTop: '124px' }}>
+        <FormContainer>
+          <h1>Connexion</h1>
+          <Form ref={formRef} onSubmit={handleForm}>
+            <InputContainer>
+              <div>
+                <Input
+                  ref={addInputs}
+                  id="login-email"
+                  type="email"
+                  placeholder="Adresse e-mail"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                  required
+                  aria-label="Entrez votre adresse email"
+                />
+              </div>
+              <div>
+                <Input
+                  ref={addInputs}
+                  id="login-password"
+                  type="password"
+                  placeholder="Mot de passe"
+                  required
+                  aria-label="Entrez votre mot de passe"
+                />
+              </div>
+              <ReCAPTCHACenterWrapper>
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                  onChange={handleRecaptchaChange}
+                  size="normal"
+                />
+              </ReCAPTCHACenterWrapper>
+              <div>
+                <Button type="submit" disabled={!recaptchaToken}>Se Connecter</Button>
+              </div>
+            </InputContainer>
+            {error && <ErrorMessage>{error}</ErrorMessage>}
+          </Form>
+          <p>
+            Tu n'as pas encore de compte ? <Link to="/signup" className="signup-link">M'inscrire maintenant</Link>
+          </p>
+        </FormContainer>
+      </main>
+    </>
   );
 };
 
