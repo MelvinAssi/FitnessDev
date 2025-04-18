@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
-import axios from '../services/axios';
+import { AuthContext } from '../../contexts/AuthContext'; // NOUVEAU: Chemin adapté pour contexts
+import axios from '../../services/axios'; // NOUVEAU: Chemin adapté pour services
 
 const ProfilePage = () => {
     const { user } = useContext(AuthContext);
@@ -34,3 +34,4 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+// NOUVEAU: Créé pour afficher les informations de l’utilisateur connecté

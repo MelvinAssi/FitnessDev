@@ -1,9 +1,8 @@
 import React, { useRef, useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom"; // MODIFICATION: Ajoute useLocation
 import { AuthContext } from "../../contexts/AuthContext";
 import styled from "styled-components";
 import ReCAPTCHA from 'react-google-recaptcha';
-
 
 const FormContainer = styled.div`
   display: flex;
@@ -28,7 +27,6 @@ const Form = styled.form`
   align-items: center;
   justify-content: center;
   width: 80%;
-  
   padding: 20px;
   margin-bottom: 10px;
   background-color: #fff;
@@ -100,10 +98,18 @@ const ReCAPTCHACenterWrapper = styled.div`
   }
 `;
 
+const ErrorMessage = styled.p` // NOUVEAU: Style pour les erreurs
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+`;
+
 const LoginPage = () => {
   const [recaptchaValue, setRecaptchaValue] = useState(null);
+  const [error, setError] = useState(''); // NOUVEAU: Pour afficher les erreurs
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation(); // NOUVEAU: Pour lire state.redirectCourse
   const formRef = useRef();
   const inputs = useRef([]);
 
@@ -122,9 +128,14 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       await login(inputs.current[0].value, inputs.current[1].value);
-      navigate('/');
+      const redirectCourse = location.state?.redirectCourse; // NOUVEAU: Récupère le cours
+      if (redirectCourse) {
+        navigate(`/course-selection/${encodeURIComponent(redirectCourse)}`); // NOUVEAU: Redirige vers le cours
+      } else {
+        navigate('/'); // NOUVEAU: Sinon, va à l’accueil
+      }
     } catch (error) {
-      alert('Login failed');
+      setError('Email ou mot de passe incorrect'); // NOUVEAU: Affiche une erreur
     }
   };
 
@@ -137,10 +148,10 @@ const LoginPage = () => {
             <div>
               <Input
                 ref={addInputs}
-                id="email"
+                id="login-email"
                 type="email"
                 placeholder="Adresse e-mail"
-                pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                 required
                 aria-label="Entrez votre adresse email"
               />
@@ -148,7 +159,7 @@ const LoginPage = () => {
             <div>
               <Input
                 ref={addInputs}
-                id="password"
+                id="login-password" 
                 type="password"
                 placeholder="Mot de passe"
                 required
@@ -156,19 +167,17 @@ const LoginPage = () => {
               />
             </div>
             <ReCAPTCHACenterWrapper>
-                <ReCAPTCHA
+              <ReCAPTCHA
                 sitekey="6LdNwBArAAAAAPUVKb7yL-hQF-1I2AJDPvhDrCqA"
                 onChange={handleRecaptchaChange}
-                />
+              />
             </ReCAPTCHACenterWrapper>
             <div>
               <Button type="submit">Se Connecter</Button>
             </div>
           </InputContainer>
-
-
+          {error && <ErrorMessage>{error}</ErrorMessage>} 
         </Form>
-
         <p>
           Tu n'as pas encore de compte ? <Link to="/signup" className="signup-link">M'inscrire maintenant</Link>
         </p>

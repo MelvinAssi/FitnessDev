@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   Container,
@@ -19,6 +19,8 @@ import {
   ChevronButton,
   ChevronImage,
   CourseDate,
+  ErrorMessage,
+  NoCoursesMessage,
 } from './CoursePageStyles';
 import poleDance from '../../assets/images/pole-dance.jpg';
 import coursCollectifs from '../../assets/images/cours-collectifs.jpg';
@@ -33,8 +35,10 @@ function CoursePage() {
   const [previousCourses, setPreviousCourses] = useState([]);
   const [showMainChevrons, setShowMainChevrons] = useState(false);
   const [showHistoryChevrons, setShowHistoryChevrons] = useState(false);
+  const [error, setError] = useState('');
   const gridRef = useRef(null);
   const historyGridRef = useRef(null);
+  const navigate = useNavigate();
 
   const courseDetails = {
     'Cours Collectifs': {
@@ -74,7 +78,7 @@ function CoursePage() {
       try {
         const token = localStorage.getItem('token');
         if (!token) {
-          console.error('Aucun token trouvé dans localStorage');
+          setError('Veuillez vous connecter');
           return;
         }
         const response = await fetch('http://localhost:3000/user/previous-courses', {
@@ -82,21 +86,33 @@ function CoursePage() {
             Authorization: `Bearer ${token}`,
           },
         });
+        if (response.status === 403) {
+          console.error('Accès refusé : Token invalide ou expiré');
+          localStorage.removeItem('token');
+          navigate('/login');
+          return;
+        }
         if (!response.ok) {
           throw new Error(`Erreur HTTP ${response.status}`);
         }
         const data = await response.json();
-        if (data.courses) {
-          setPreviousCourses(data.courses);
-        } else {
-          console.error('Aucune donnée de cours reçue:', data);
-        }
+        console.log('Inscriptions reçues (CoursePage):', data.courses);
+
+        // Filtrer les cours passés uniquement
+        const pastCourses = data.courses.filter((course) => {
+          const courseDate = new Date(course.datetime_cours);
+          return courseDate < new Date();
+        });
+        console.log('Cours passés filtrés:', pastCourses);
+
+        setPreviousCourses(pastCourses);
       } catch (error) {
         console.error('Erreur lors de la récupération des cours précédents:', error);
+        setError('Impossible de charger l’historique des cours.');
       }
     };
     fetchPreviousCourses();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     const checkScroll = () => {
@@ -125,6 +141,15 @@ function CoursePage() {
     setSelectedCourse(courseName);
   };
 
+  const handleEnrollClick = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login', { state: { redirectCourse: selectedCourse } });
+    } else {
+      navigate(`/course-selection/${encodeURIComponent(selectedCourse)}`);
+    }
+  };
+
   const scrollLeft = (ref) => {
     if (ref.current) {
       ref.current.scrollBy({ left: -340, behavior: 'smooth' });
@@ -147,7 +172,7 @@ function CoursePage() {
         <HeaderSection>
           <Title>{courseDetails[selectedCourse]?.title || 'Cours'}</Title>
           <Subtitle>{courseDetails[selectedCourse]?.subtitle || ''}</Subtitle>
-          <EnrollButton to="/course-selection">S'inscrire</EnrollButton>
+          <EnrollButton onClick={handleEnrollClick}>S'inscrire</EnrollButton>
         </HeaderSection>
       </LeftBlock>
       <CoursesSection>
@@ -173,31 +198,48 @@ function CoursePage() {
       </CoursesSection>
       <CoursesSection>
         <CoursesTitle>VOS COURS PRÉCÉDENTS</CoursesTitle>
-        <ChevronButton $visible={showHistoryChevrons} onClick={() => scrollLeft(historyGridRef)} direction="left">
-          <ChevronImage src="/src/assets/icons/flecheGauche.png" alt="Flèche gauche" />
-        </ChevronButton>
-        <CourseGrid ref={historyGridRef}>
-          {previousCourses.map((course, index) => (
-            <CourseBlock
-              key={index}
-              $isSelected={selectedCourse === course.nom_cours}
-              onClick={() => handleImageClick(course.nom_cours)}
-            >
-              <CourseImage
-                src={courseDetails[course.nom_cours]?.image || coursCollectifs}
-                alt={course.nom_cours}
-              />
-              <CourseName>{course.nom_cours}</CourseName>
-              <CourseDate>{new Date(course.datetime_cours).toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}</CourseDate>
-            </CourseBlock>
-          ))}
-        </CourseGrid>
-        <ChevronButton $visible={showHistoryChevrons} onClick={() => scrollRight(historyGridRef)} direction="right">
-          <ChevronImage src="/src/assets/icons/flecheDroite.png" alt="Flèche droite" />
-        </ChevronButton>
+        {error ? (
+          <ErrorMessage>{error}</ErrorMessage>
+        ) : previousCourses.length === 0 ? (
+          <NoCoursesMessage>Aucun cours passé trouvé.</NoCoursesMessage>
+        ) : (
+          <>
+            <ChevronButton $visible={showHistoryChevrons} onClick={() => scrollLeft(historyGridRef)} direction="left">
+              <ChevronImage src="/src/assets/icons/flecheGauche.png" alt="Flèche gauche" />
+            </ChevronButton>
+            <CourseGrid ref={historyGridRef}>
+              {previousCourses.map((course, index) => (
+                <CourseBlock
+                  key={`${course.id_cours}_${index}`}
+                  $isSelected={selectedCourse === course.nom_cours}
+                  onClick={() => handleImageClick(course.nom_cours)}
+                >
+                  <CourseImage
+                    src={courseDetails[course.nom_cours]?.image || coursCollectifs}
+                    alt={course.nom_cours}
+                  />
+                  <CourseName>{course.nom_cours}</CourseName>
+                  <CourseDate>
+                    {new Date(course.datetime_cours).toLocaleString('fr-FR', { timeZone: 'Europe/Paris' })}
+                  </CourseDate>
+                </CourseBlock>
+              ))}
+            </CourseGrid>
+            <ChevronButton $visible={showHistoryChevrons} onClick={() => scrollRight(historyGridRef)} direction="right">
+              <ChevronImage src="/src/assets/icons/flecheDroite.png" alt="Flèche droite" />
+            </ChevronButton>
+          </>
+        )}
       </CoursesSection>
     </Container>
   );
 }
 
 export default CoursePage;
+// MODIFICATION:
+// - Ajout d'un filtre dans fetchPreviousCourses pour n'afficher que les cours passés (datetime_cours < new Date())
+// - Ajout de l'état error pour afficher les messages d'erreur
+// - Ajout de logs pour déboguer les inscriptions reçues et filtrées
+// - Ajout d'un message "Aucun cours passé trouvé" si previousCourses est vide
+// - Clé unique pour CourseBlock dans l'historique avec id_cours et index
+// - Intégration des styles ErrorMessage et NoCoursesMessage depuis CoursePageStyles.jsx

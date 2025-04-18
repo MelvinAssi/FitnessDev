@@ -1,13 +1,6 @@
-// Importe Express pour créer des routes HTTP.
 const express = require('express');
-
-// Crée un routeur Express pour organiser les routes de ce fichier.
 const router = express.Router();
-
-// Importe le middleware d'authentification pour sécuriser les routes.
 const authMiddleware = require('../middleware/auth');
-
-// Importe la connexion à la base de données pour exécuter des requêtes SQL.
 const pool = require('../config/db');
 
 // Route GET /user/profil : Récupère les informations du profil de l'utilisateur authentifié.
@@ -31,23 +24,22 @@ router.get('/profil', authMiddleware, async (req, res) => {
     }
 });
 
-// Route GET /user/previous-courses : Récupère les 6 derniers cours suivis par l'utilisateur.
+// Route GET /user/previous-courses : Récupère toutes les inscriptions de l'utilisateur.
 router.get('/previous-courses', authMiddleware, async (req, res) => {
     try {
         const userId = req.user.id;
         const result = await pool.query(
             `
-            SELECT c.nom_cours, c.datetime_cours
+            SELECT c.nom_cours, c.datetime_cours, c.id_cours
             FROM INSCRIPTION i
             JOIN COURS c ON i.id_cours = c.id_cours
             WHERE i.id_inscrit = $1
             ORDER BY c.datetime_cours DESC
-            LIMIT 6
             `,
             [userId]
         );
         res.json({
-            message: 'Cours précédents récupérés avec succès',
+            message: 'Inscriptions récupérées avec succès',
             courses: result.rows,
         });
     } catch (error) {
@@ -58,3 +50,4 @@ router.get('/previous-courses', authMiddleware, async (req, res) => {
 
 // Exporte le routeur pour qu'il soit utilisé dans index.js.
 module.exports = router;
+// MODIFICATION: Suppression de datetime_cours < NOW() pour inclure toutes les inscriptions

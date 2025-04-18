@@ -13,6 +13,8 @@ const userAbonnementRoutes = require('./routes/abonnement');
 const typeAbonnementRoutes = require('./routes/typeAbonnement');
 const produitRoutes = require('./routes/produit');
 const achatRoutes = require('./routes/achat');
+const bookingsRoutes = require('./routes/bookings');
+
 
 // Charge les variables d'environnement depuis le fichier .env (ex. : DB_USER, JWT_SECRET).
 require('dotenv').config();
@@ -38,6 +40,7 @@ app.use('/user/abonnement', userAbonnementRoutes);
 app.use('/type_abonnement', typeAbonnementRoutes);
 app.use("/produit", produitRoutes);
 app.use("/user/achat", achatRoutes);
+app.use('/bookings', bookingsRoutes);
 
 // Définit une route GET pour l'URL racine (/).
 app.get('/', (req, res) => {
