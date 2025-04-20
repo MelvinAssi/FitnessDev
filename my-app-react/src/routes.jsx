@@ -7,7 +7,12 @@ import SubscriptionPage from './pages/SubscriptionPage/SubscriptionPage.jsx';
 import CoursePage from './pages/CoursePage/CoursePage';
 import CourseSelectionPage from './pages/CourseSelectionPage/CourseSelectionPage';
 import ProfilePage from './pages/ProfilePage/ProfilePage';
+import EditProfilePage from './pages/ProfilePage/EditProfilePage';
+import CoursesInscritsPage from './pages/ProfilePage/CoursesInscritsPage';
 import ScrollToTop from './components/ScrollToTop.jsx';
+import ProductPage from './pages/ProductPage/ProductPage';
+import PanierPage from './pages/PanierPage/PanierPage';
+import CommandesPage from './pages/ProfilePage/CommandesPage';
 
 const AppRoutes = () => {
   return (
@@ -22,6 +27,11 @@ const AppRoutes = () => {
         <Route path='/courses' element={<CoursePage />} />
         <Route path='/course-selection/:courseName' element={<CourseSelectionPage />} />
         <Route path="/profil" element={<ProfilePage />} />
+        <Route path="/courses-inscrits" element={<CoursesInscritsPage />} />
+        <Route path="/profil/edit" element={<EditProfilePage />} />
+        <Route path="/produit" element={<ProductPage />} />
+        <Route path="/panier" element={<PanierPage />} />
+        <Route path="/commandes" element={<CommandesPage />} />
       </Routes>
     </>
   );

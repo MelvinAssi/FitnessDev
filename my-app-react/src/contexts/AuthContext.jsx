@@ -19,7 +19,8 @@ export const AuthProvider = (props) => {
           setToken(localToken);
           console.log('Profil:', profil);
         } catch (error) {
-          logout();
+          // MODIFICATION: Suppression de logout() pour éviter la déconnexion automatique
+          console.error('Erreur lors du test du token:', error.message);
         }
       };
       testToken();
@@ -36,10 +37,9 @@ export const AuthProvider = (props) => {
         prenom_inscrit: data.firstname,
         adresse_inscrit: data.adress,
         telephone_inscrit: data.phone,
-        type_inscrit: "client",
+        type_inscrit: data.civilite, // MODIFICATION: Changé civilite_inscrit à type_inscrit
         id_abonnement: null,
-        date_naissance: data.birthday,
-        civilite_inscrit: data.civilite,
+        date_naissance: data.birthday, // MODIFICATION: Changé date_naissance à birthday (non utilisé dans INSCRIT)
         recaptchaToken
       });
       const { token } = response.data;
@@ -83,15 +83,16 @@ export const AuthProvider = (props) => {
       return response.data.user;
     } catch (error) {
       console.error('Erreur fetchprofil:', error.response?.data?.message || error.message);
-      if (error.response?.status === 403) {
-        logout();
-      }
       throw error;
     }
   };
 
+  const updateUser = (updatedUser) => {
+    setUser(updatedUser);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, token, signup, login, logout, fetchprofil }}>
+    <AuthContext.Provider value={{ user, token, signup, login, logout, fetchprofil, updateUser }}>
       {props.children}
     </AuthContext.Provider>
   );

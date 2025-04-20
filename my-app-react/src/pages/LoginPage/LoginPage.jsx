@@ -178,7 +178,7 @@ const LoginPage = () => {
                   id="login-email"
                   type="email"
                   placeholder="Adresse e-mail"
-                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}" // MODIFICATION: Supprimé \ pour le point
                   required
                   aria-label="Entrez votre adresse email"
                 />
