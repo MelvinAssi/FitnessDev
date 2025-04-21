@@ -12,6 +12,8 @@ import CartWrapper from './components/CartWrapper.jsx';
 import CoursePage from './pages/CoursePage/CoursePage';
 import CourseSelectionPage from './pages/CourseSelectionPage/CourseSelectionPage';
 import ScrollToTop from './components/ScrollToTop.jsx';
+import Checkout from './pages/Checkout/Checkout.jsx';
+import Paiement from './pages/Paiement/Paiement.jsx';
 
 const AppRoutes = () => {
   return (
@@ -42,6 +44,15 @@ const AppRoutes = () => {
             </CartWrapper>
           }
         />
+        <Route
+          path="/checkout"
+          element={
+            <CartWrapper>
+              <Checkout />
+            </CartWrapper>
+          }
+        />
+        <Route path="/paiement" element={<Paiement />} />
         {/* Routes from main branch for course-related pages */}
         <Route path="/courses" element={<CoursePage />} />
         <Route path="/course-selection" element={<CourseSelectionPage />} />

@@ -120,7 +120,7 @@ const ProductItem = ({ name, price: basePrice, image, id }) => {
 
   const handleAddToCart = () => {
     addToCart({ id, name, price: currentPrice, image, quantity });
-    navigate('/panier');
+    // navigate('/panier');
   };
 
   const decreaseQuantity = () => {

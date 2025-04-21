@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contexts/AuthContext.jsx';
 import Button from './Button.jsx';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { CartContext } from '../contexts/CartContext.jsx';
 
 
 const StyledH2 = styled.h2`
@@ -99,6 +100,13 @@ const BurgerHeader = styled.div.withConfig({
     display: none; 
   }
 `;
+
+const CartIconWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
 const Panier = styled.i`
 
   display:flex ;

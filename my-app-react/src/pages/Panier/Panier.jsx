@@ -177,8 +177,8 @@ const Panier = () => {
   };
 
   const handleValidate = () => {
-    console.log('Valider button clicked');
-    // Add validation logic here (e.g., navigate to checkout, save cart, etc.)
+    console.log('Navigating to checkout');
+    navigate('/checkout'); // Navigate to the checkout page
   };
 
   // Calculate total sum
