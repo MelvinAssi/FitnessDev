@@ -9,6 +9,10 @@ export const Container = styled.div`
   flex-direction: column;
   background-color: #2A2A2A;
   min-height: 100vh;
+
+  @media (max-width: 768px) {
+    min-height: auto; /* Permet un défilement naturel */
+  }
 `;
 
 export const LeftBlock = styled.div`
@@ -17,6 +21,13 @@ export const LeftBlock = styled.div`
   margin-top: 300px;
   z-index: 2;
   min-height: 200px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 150px; /* Réduit l'espace */
+    padding: 0 20px;
+  }
 `;
 
 export const HeaderSection = styled.div`
@@ -24,6 +35,11 @@ export const HeaderSection = styled.div`
   flex-direction: column;
   height: 350px;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    height: auto; /* Ajuste à contenu */
+    padding-bottom: 20px;
+  }
 `;
 
 export const Title = styled.h1`
@@ -31,6 +47,10 @@ export const Title = styled.h1`
   font-size: 32px;
   font-weight: bold;
   color: #ffffff;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
 `;
 
 export const Subtitle = styled.p`
@@ -39,6 +59,10 @@ export const Subtitle = styled.p`
   font-weight: bold;
   color: #ffffff;
   margin: 0.5rem 0;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
 export const EnrollButton = styled.button`
@@ -53,9 +77,15 @@ export const EnrollButton = styled.button`
   margin-top: 1rem;
   border: none;
   cursor: pointer;
+
   &:hover {
     background-color: #c0c0c0;
-    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px 15px;
+    font-size: 14px;
+    margin-top: 0.5rem;
   }
 `;
 
@@ -71,8 +101,18 @@ export const CoursesSection = styled.div`
   padding: 0;
   position: relative;
   box-sizing: border-box;
+
   &:last-of-type {
     margin-bottom: 200px;
+  }
+
+  @media (max-width: 768px) {
+    padding-top: 60px; /* Réduit l'espace */
+    margin: 10px 0;
+
+    &:last-of-type {
+      margin-bottom: 100px;
+    }
   }
 `;
 
@@ -83,6 +123,11 @@ export const CoursesTitle = styled.h2`
   margin-bottom: 1rem;
   position: relative;
   z-index: 2;
+
+  @media (max-width: 768px) {
+    font-size: 10px;
+    margin-bottom: 0.5rem;
+  }
 `;
 
 export const CourseGrid = styled.div`
@@ -96,11 +141,17 @@ export const CourseGrid = styled.div`
   -webkit-overflow-scrolling: touch;
   padding-bottom: 10px;
   position: relative;
+
   &::-webkit-scrollbar {
     display: none;
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
+
+  @media (max-width: 768px) {
+    padding: 0 10px;
+    gap: 10px;
+  }
 `;
 
 export const CourseBlock = styled.div`
@@ -112,6 +163,11 @@ export const CourseBlock = styled.div`
   position: relative;
   cursor: pointer;
   border: ${({ $isSelected }) => ($isSelected ? '2px solid #ffffff' : 'none')};
+
+  @media (max-width: 768px) {
+    width: 200px; /* Réduit la largeur */
+    height: 120px;
+  }
 `;
 
 export const CourseImage = styled.img`
@@ -119,6 +175,10 @@ export const CourseImage = styled.img`
   height: 100%;
   object-fit: cover;
   transition: opacity 0.3s ease;
+
+  @media (max-width: 768px) {
+    object-fit: cover;
+  }
 `;
 
 export const CourseName = styled.div`
@@ -146,6 +206,10 @@ export const CourseName = styled.div`
   ${CourseBlock}:hover ${CourseImage} {
     opacity: 0.3;
   }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 export const CourseDate = styled.div`
@@ -155,6 +219,12 @@ export const CourseDate = styled.div`
   color: white;
   font-size: 14px;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+    bottom: 5px;
+    right: 5px;
+  }
 `;
 
 export const LargeImageContainer = styled.div`
@@ -165,6 +235,10 @@ export const LargeImageContainer = styled.div`
   height: 120%;
   z-index: 0;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    height: 80%; /* Réduit la hauteur */
+  }
 `;
 
 export const LargeImage = styled.img`
@@ -174,6 +248,11 @@ export const LargeImage = styled.img`
   object-position: center 40%;
   display: block;
   loading: lazy;
+
+  @media (max-width: 768px) {
+    height: 100%;
+    object-position: center 50%;
+  }
 `;
 
 export const GradientOverlay = styled.div`
@@ -183,6 +262,10 @@ export const GradientOverlay = styled.div`
   width: 100%;
   height: 100%;
   background: linear-gradient(to bottom, transparent 0%, rgba(42, 42, 42, 0.63) 45%, #2A2A2A 90%);
+
+  @media (max-width: 768px) {
+    background: linear-gradient(to bottom, transparent 0%, rgba(42, 42, 42, 0.63) 50%, #2A2A2A 85%);
+  }
 `;
 
 export const ChevronButton = styled.button`
@@ -198,14 +281,25 @@ export const ChevronButton = styled.button`
   display: ${({ $visible }) => ($visible ? 'block' : 'none')};
   transition: opacity 0.3s ease;
   opacity: 0.7;
+
   &:hover {
     opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    top: calc(100% - 120px / 2); /* Ajuste pour la hauteur réduite */
+    padding: 8px;
   }
 `;
 
 export const ChevronImage = styled.img`
   width: 30px;
   height: 30px;
+
+  @media (max-width: 768px) {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 export const ErrorMessage = styled.p`
@@ -214,6 +308,10 @@ export const ErrorMessage = styled.p`
   color: #ff0000;
   text-align: center;
   margin: 1rem 0;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
 `;
 
 export const NoCoursesMessage = styled.p`
@@ -222,4 +320,8 @@ export const NoCoursesMessage = styled.p`
   color: #666;
   text-align: center;
   margin: 1rem 0;
+
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
 `;

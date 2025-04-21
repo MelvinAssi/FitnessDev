@@ -3,7 +3,11 @@ import styled from 'styled-components';
 export const Main = styled.main`
   min-height: 100vh;
   padding-top: 124px;
-  background-color: #ffffff; /* Fond blanc */
+  background-color: #ffffff;
+
+  @media (max-width: 768px) {
+    padding-top: 80px; /* Réduit l'espace */
+  }
 `;
 
 export const Offset = styled.div`
@@ -14,6 +18,7 @@ export const Offset = styled.div`
 
   @media (max-width: 768px) {
     display: flex;
+    height: 60px; /* Réduit pour mobile */
   }
 `;
 
@@ -21,6 +26,10 @@ export const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
+
+  @media (max-width: 768px) {
+    padding: 20px 10px; /* Moins de padding */
+  }
 `;
 
 export const Title = styled.h1`
@@ -30,7 +39,8 @@ export const Title = styled.h1`
   color: #000000;
 
   @media (max-width: 768px) {
-    font-size: 35px;
+    font-size: 30px; /* Taille réduite */
+    margin-bottom: 20px;
   }
 `;
 
@@ -41,7 +51,9 @@ export const GridContainer = styled.div`
   margin-bottom: 30px;
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Une colonne */
+    gap: 20px;
+    margin-bottom: 20px;
   }
 `;
 
@@ -51,25 +63,31 @@ export const SmallGridContainer = styled.div`
   gap: 30px;
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Une colonne */
+    gap: 20px;
   }
 `;
 
 export const Block = styled.div`
-  background-color: #ececec; /* Gris léger */
+  background-color: #ececec;
   border-radius: 8px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombrage renforcé */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  @media (max-width: 768px) {
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre plus légère */
+  }
 `;
 
 export const LargeBlock = styled(Block)`
   min-height: 400px;
 
   @media (max-width: 768px) {
-    min-height: 300px;
+    min-height: 250px; /* Réduit pour mobile */
   }
 `;
 
@@ -88,6 +106,7 @@ export const BlockTitle = styled.h2`
 
   @media (max-width: 768px) {
     font-size: 20px;
+    margin-bottom: 15px;
   }
 `;
 
@@ -95,6 +114,10 @@ export const InfoList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0 0 20px 0;
+
+  @media (max-width: 768px) {
+    margin-bottom: 15px;
+  }
 `;
 
 export const InfoItem = styled.li`
@@ -104,6 +127,7 @@ export const InfoItem = styled.li`
 
   @media (max-width: 768px) {
     font-size: 14px;
+    margin-bottom: 8px;
   }
 `;
 
@@ -126,7 +150,7 @@ export const RedButton = styled.button`
   }
 
   &:disabled {
-    background-color: #999999; /* Gris pour bouton désactivé */
+    background-color: #999999;
     cursor: not-allowed;
   }
 
@@ -159,6 +183,7 @@ export const GrayButton = styled.button`
     width: 100px;
     height: 35px;
     font-size: 12px;
+    margin-left: 0; /* Pas d'espace à gauche */
   }
 `;
 
@@ -184,6 +209,11 @@ export const Popup = styled.div`
   text-align: center;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    max-width: 80%;
+    padding: 15px;
+  }
 `;
 
 export const PopupTitle = styled.h2`
@@ -193,6 +223,7 @@ export const PopupTitle = styled.h2`
 
   @media (max-width: 768px) {
     font-size: 20px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -203,6 +234,7 @@ export const PopupText = styled.p`
 
   @media (max-width: 768px) {
     font-size: 14px;
+    margin-bottom: 15px;
   }
 `;
 
@@ -210,4 +242,9 @@ export const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column; /* Empiler les boutons */
+    gap: 8px;
+  }
 `;
