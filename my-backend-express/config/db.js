@@ -1,27 +1,44 @@
-// Importe la classe Pool du module pg (node-postgres), utilisée pour gérer les connexions à PostgreSQL.
-// Pool permet de réutiliser des connexions pour éviter d'en ouvrir/fermer constamment, ce qui améliore les performances.
+/**
+ * Fichier : db.js
+ * Description : Module Node.js pour configurer et exporter une instance Pool de connexion à une base de données
+ * PostgreSQL en utilisant le module pg. Lit les paramètres de connexion depuis .env pour une configuration sécurisée.
+ * L'instance Pool est utilisée dans d'autres fichiers pour exécuter des requêtes SQL.
+ */
+
+// Importe la classe Pool du module pg (node-postgres)
+// Pool gère un ensemble de connexions réutilisables pour éviter d'ouvrir/fermer des connexions à chaque requête
 const { Pool } = require('pg');
 
-// Charge les variables d'environnement depuis .env (ex. : DB_USER, DB_NAME).
-// Le module dotenv lit .env et les stocke dans process.env pour un accès sécurisé.
+// Charge les variables d'environnement depuis le fichier .env
+// Exemple : DB_USER, DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT
+// dotenv lit .env et les stocke dans process.env
 require('dotenv').config();
 
-// Crée une instance de Pool avec les paramètres de connexion à PostgreSQL.
-// Pool est une classe qui accepte un objet de configuration avec les clés suivantes :
+// Crée une nouvelle instance de Pool avec les paramètres de connexion
+// Syntaxe : new Pool(config)
+// config : Objet contenant les paramètres de connexion à PostgreSQL
 const pool = new Pool({
-    // Utilisateur de la base (ex. : postgres), lu depuis .env.
-    // process.env.DB_USER récupère la valeur de DB_USER dans .env.
+    // Utilisateur de la base de données, récupéré depuis la variable d'environnement DB_USER
+    // Exemple : process.env.DB_USER = 'postgres'
     user: process.env.DB_USER,
-    // Hôte de la base (ex. : localhost), où PostgreSQL est exécuté.
+    
+    // Hôte du serveur PostgreSQL, récupéré depuis DB_HOST
+    // Exemple : process.env.DB_HOST = 'localhost'
     host: process.env.DB_HOST,
-    // Nom de la base (ex. : fitness_dev).
+    
+    // Nom de la base de données, récupéré depuis DB_NAME
+    // Exemple : process.env.DB_NAME = 'fitness_dev'
     database: process.env.DB_NAME,
-    // Mot de passe de l'utilisateur PostgreSQL.
+    
+    // Mot de passe de l'utilisateur, récupéré depuis DB_PASSWORD
+    // Exemple : process.env.DB_PASSWORD = 'monMotDePasse'
     password: process.env.DB_PASSWORD,
-    // Port de PostgreSQL (par défaut 5432).
+    
+    // Port du serveur PostgreSQL, récupéré depuis DB_PORT
+    // Exemple : process.env.DB_PORT = 5432 (port par défaut de PostgreSQL)
     port: process.env.DB_PORT,
 });
 
-// Exporte l'instance pool pour qu'elle soit utilisée dans d'autres fichiers (ex. : user.js, auth.js).
-// module.exports est la syntaxe Node.js pour rendre une valeur accessible à d'autres modules.
+// Exporte l'instance pool pour qu'elle soit utilisée dans d'autres fichiers
+// module.exports permet à d'autres modules d'importer pool via require('./db')
 module.exports = pool;

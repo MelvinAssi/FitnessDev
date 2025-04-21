@@ -4,21 +4,24 @@ import ContactPage from './pages/ContactPage/ContactPage.jsx';
 import LoginPage from './pages/LoginPage/LoginPage.jsx';
 import SignUpPage from './pages/SignUpPage/SignUpPage.jsx';
 import SubscriptionPage from './pages/SubscriptionPage/SubscriptionPage.jsx';
-// Added imports from Trey branch for cart functionality
+// Imports from Trey branch for cart functionality
 import Produit from './pages/Produit/Produit.jsx';
 import Panier from './pages/Panier/Panier.jsx';
 import CartWrapper from './components/CartWrapper.jsx';
-// Added imports from main branch for course-related pages and ScrollToTop
-import CoursePage from './pages/CoursePage/CoursePage';
-import CourseSelectionPage from './pages/CourseSelectionPage/CourseSelectionPage';
-import ScrollToTop from './components/ScrollToTop.jsx';
 import Checkout from './pages/Checkout/Checkout.jsx';
 import Paiement from './pages/Paiement/Paiement.jsx';
+// Imports from main branch for course-related and profile pages
+import CoursePage from './pages/CoursePage/CoursePage';
+import CourseSelectionPage from './pages/CourseSelectionPage/CourseSelectionPage';
+import ProfilePage from './pages/ProfilePage/ProfilePage';
+import EditProfilePage from './pages/ProfilePage/EditProfilePage';
+import CoursesInscritsPage from './pages/ProfilePage/CoursesInscritsPage';
+import CommandesPage from './pages/ProfilePage/CommandesPage';
+import ScrollToTop from './components/ScrollToTop.jsx';
 
 const AppRoutes = () => {
   return (
     <>
-      {/* Added ScrollToTop from main branch to ensure scrolling to top on route changes */}
       <ScrollToTop />
       <Routes>
         {/* Common routes present in both branches */}
@@ -53,9 +56,13 @@ const AppRoutes = () => {
           }
         />
         <Route path="/paiement" element={<Paiement />} />
-        {/* Routes from main branch for course-related pages */}
+        {/* Routes from main branch for course and profile pages */}
         <Route path="/courses" element={<CoursePage />} />
-        <Route path="/course-selection" element={<CourseSelectionPage />} />
+        <Route path="/course-selection/:courseName" element={<CourseSelectionPage />} />
+        <Route path="/profil" element={<ProfilePage />} />
+        <Route path="/courses-inscrits" element={<CoursesInscritsPage />} />
+        <Route path="/profil/edit" element={<EditProfilePage />} />
+        <Route path="/commandes" element={<CommandesPage />} />
       </Routes>
     </>
   );
