@@ -47,42 +47,33 @@ const ProfilePage = () => {
    * Dépendances : [location.state?.refresh]
    */
   useEffect(() => {
-    // Définit une fonction asynchrone pour récupérer le profil
     const fetchProfile = async () => {
       try {
-        // Envoie une requête GET à /user/profil
         const response = await axios.get('/user/profil');
-        // Met à jour l'état profile avec les données utilisateur
         setProfile(response.data.user);
       } catch (error) {
-        // Journalise l'erreur pour débogage
         console.error('Erreur profil:', error);
+        alert('Une erreur est survenue lors de la récupération de votre profil.');
       }
     };
-
-    // Définit une fonction asynchrone pour récupérer l'abonnement
+  
     const fetchAbonnement = async () => {
       try {
-        // Envoie une requête GET à /user/abonnement/check
         const response = await axios.get('/user/abonnement/check');
-        // Met à jour l'état abonnement avec les données
         setAbonnement(response.data);
       } catch (error) {
-        // Vérifie si l'erreur est un 404 (aucun abonnement actif)
         if (error.response && error.response.status === 404) {
-          // Définit abonnement à null
-          setAbonnement(null);
+          setAbonnement(null);  // Aucun abonnement actif
         } else {
-          // Journalise l'erreur pour débogage
           console.error('Erreur abonnement:', error);
+          alert("Une erreur est survenue lors de la récupération de votre abonnement.");
         }
       }
     };
-
-    // Exécute les deux fonctions pour charger les données
+  
     fetchProfile();
     fetchAbonnement();
-  }, [location.state?.refresh]); // Dépendance : refresh, relance si refresh est true
+  }, [location.state?.refresh]);// Dépendance : refresh, relance si refresh est true
 
   /**
    * Fonction : handleCancelAbonnement

@@ -9,7 +9,7 @@ import React, { useEffect, useState, useContext } from "react"; // Importe React
 import styled from "styled-components"; // Importe styled-components pour créer des composants stylisés avec CSS
 import axios from "../services/axios.js"; // Importe l'instance Axios configurée pour effectuer des requêtes HTTP vers le backend
 import { AuthContext } from "../contexts/AuthContext.jsx"; // Importe AuthContext pour accéder à l'état de l'utilisateur connecté
-
+import { Link, useNavigate, useLocation } from "react-router-dom"; 
 const Container = styled.div`
   background-color: white;
   width: 100%;
@@ -115,7 +115,7 @@ const SelectButton = styled.button.withConfig({
 const Subscription = ({ name, price, list }) => {
   // Récupère l'utilisateur connecté depuis AuthContext pour vérifier son abonnement
   const { user } = useContext(AuthContext);
-
+  const navigate = useNavigate();
   // État pour stocker le prix sur 4 semaines récupéré depuis l'API, initialisé à null
   const [price4s, setPrice4s] = useState(null);
 
@@ -141,9 +141,8 @@ const Subscription = ({ name, price, list }) => {
     })
     // Gère la réponse réussie
     .then(response => {
-      // Met à jour l'état price4s avec le prix sur 4 semaines du premier résultat
-      setPrice4s(response.data[0].prix_4_semaines);
-      // Met à jour l'état id avec l'ID de l'abonnement du premier résultat
+      console.log('🔍 Résultat /type_abonnement :', response.data);
+      setPrice4s(response.data[0].prix_4s_type_abonnement);
       setID(response.data[0].id_type_abonnement);
     })
     // Gère les erreurs de la requête
@@ -160,29 +159,20 @@ const Subscription = ({ name, price, list }) => {
    * Dépendances : [user] (relance si l'utilisateur change)
    */
   useEffect(() => {
-    // Vérifie si un utilisateur est connecté
     if (user) {
-      // Envoie une requête GET à l'endpoint /user/abonnement/check pour vérifier l'abonnement actif
       axios.get('/user/abonnement/check')
-      // Gère la réponse réussie
-      .then(response => {
-        // Journalise l'ID de l'abonnement actif pour débogage
-        console.log('Check Abonnement:', response.data.id_type_abonnement);
-        // Compare l'ID de l'abonnement actif avec l'ID de cet abonnement
-        if (response.data.id_type_abonnement == id) {
-          // Désactive le bouton si l'abonnement est déjà actif
-          setIsButtonDisabled(true);
-        }
-      })
-      .then(response => {
-        setPrice4s(response.data[0].prix_4s_type_abonnement);
-        setID(response.data[0].id_type_abonnement);
-      })
-      .catch(error => {        
-        console.error(error);
-      });
+        .then(response => {
+          console.log('Check Abonnement:', response.data.id_type_abonnement);
+  
+          if (response.data.id_type_abonnement == id) {
+            setIsButtonDisabled(true);
+          }
+        })
+        .catch(error => {
+          console.error('Erreur lors de la vérification de l\'abonnement :', error);
+        });
     }
-  }, [user]); // Dépendance : user, relance si l'utilisateur change
+  }, [user, id]); // Dépendance : user, relance si l'utilisateur change
 
   /**
    * Fonction : handleClick
@@ -190,9 +180,54 @@ const Subscription = ({ name, price, list }) => {
    * Retour : Aucun
    */
   const handleClick = () => {
-    // Fonction vide servant de placeholder pour une future logique
-  };
+    if (user) {
+      const subscribeToPlan = async () => {
+        try {
+          const startDate = new Date(); 
+          const endDate = new Date();
+          endDate.setMonth(endDate.getMonth() + 1); 
 
+          
+          const formattedStartDate = startDate.toISOString().split('T')[0]; 
+          const formattedEndDate = endDate.toISOString().split('T')[0]; 
+
+          axios.post('/user/abonnement/subscribe', {
+            duree_abonnement: 1,
+            datedebut_abonnement: formattedStartDate,
+            datefin_abonnement: formattedEndDate,
+            prix_abonnement: price4s,
+            actif_abonnement: true,
+            id_type_abonnement: id,
+            type_paiement: 'carte',
+          });
+  
+          // Une fois la réponse reçue, on met à jour l'état du bouton
+          setIsButtonDisabled(true);
+          console.log('✅ Souscription réussie :', response.data);
+  
+          // Affichage d'une alerte de succès
+          alert('Souscription réussie !');
+        } catch (error) {
+          // Gestion des erreurs
+          console.error('❌ Erreur lors de la souscription :', error);
+  
+          if (error.response && error.response.status === 400) {
+            console.error('Réponse du serveur:', error.response.data);
+            alert(error.response.data.message);
+          } else {
+            alert("Erreur serveur lors de la souscription");
+          }
+        }
+      };
+  
+      // On appelle la fonction d'abonnement
+      subscribeToPlan();
+    } else {
+      // Redirige l'utilisateur vers la page de connexion si il n'est pas connecté
+      navigate("/login");
+    }
+  };
+  
   // Début du rendu JSX
   return (
     // Conteneur principal de la carte d'abonnement
