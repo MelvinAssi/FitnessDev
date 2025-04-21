@@ -306,7 +306,7 @@ const CoursesInscritsPage = () => {
       try {
         // Envoie une requête GET à /user/previous-courses
         const response = await axios.get('/user/previous-courses');
-        
+        console.log(response.data.courses)
         // Crée une instance de la date actuelle pour comparaison
         const now = new Date();
         

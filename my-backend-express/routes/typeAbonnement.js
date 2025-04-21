@@ -16,13 +16,6 @@ const pool = require('../config/db'); // Importe l'instance Pool pour PostgreSQL
  * Retourne une liste de types ou un message d'erreur si non trouvé.
  */
 router.get('/', async (req, res) => {
-<<<<<<< HEAD
-    const { nom } = req.query; 
-    
-    try {
-        let result;        
-        if (nom) {            
-=======
     // Extrait le paramètre nom depuis req.query (ex. : /?nom=ESSENTIAL)
     // req.query est un objet contenant les paramètres de l'URL
     const { nom } = req.query;
@@ -35,17 +28,12 @@ router.get('/', async (req, res) => {
         if (nom) {
             // Si nom existe, exécute une requête pour trouver un type spécifique
             // LOWER convertit les chaînes en minuscules pour une comparaison insensible à la casse
->>>>>>> 07900abf7def4abe1ae1f3a3f272b3171b5500f3
             result = await pool.query(
                 'SELECT * FROM type_abonnement WHERE LOWER(nom_type_abonnement) = LOWER($1)',
                 [nom] // $1 est remplacé par la valeur de nom
             );
-<<<<<<< HEAD
-            console.log(result.rows);
-=======
             
             // Vérifie si aucun type n'a été trouvé
->>>>>>> 07900abf7def4abe1ae1f3a3f272b3171b5500f3
             if (result.rows.length === 0) {
                 // Renvoie une erreur 404 avec un message
                 return res.status(404).json({ message: 'Type d’abonnement non trouvé' });
@@ -54,14 +42,9 @@ router.get('/', async (req, res) => {
             // Si aucun nom n'est fourni, récupère tous les types d'abonnements
             result = await pool.query('SELECT * FROM type_abonnement');
         }
-<<<<<<< HEAD
-        
-        console.log(result.rows);
-=======
 
         // Renvoie la liste des types d'abonnements
         // result.rows est un tableau d'objets (ex. : [{ id_type_abonnement: 1, nom_type_abonnement: "ESSENTIAL" }])
->>>>>>> 07900abf7def4abe1ae1f3a3f272b3171b5500f3
         res.json(result.rows);
     } catch (err) {
         // Journalise l'erreur pour débogage

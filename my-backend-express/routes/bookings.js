@@ -18,10 +18,10 @@ const pool = require('../config/db'); // Importe l'instance Pool
 router.post('/', authMiddleware, async (req, res) => {
     // Extrait les données du corps de la requête
     const { courseName, date, time, duration } = req.body;
-    
+    console.log(req.body);
     // Récupère l'ID de l'utilisateur depuis le token JWT
-    const id_inscrit = req.user.id;
-
+    const id_inscrit = req.user.id_inscrit;
+    
     // Vérifie si l'utilisateur est authentifié
     if (!id_inscrit) {
         // Renvoie une erreur 401 si aucun ID

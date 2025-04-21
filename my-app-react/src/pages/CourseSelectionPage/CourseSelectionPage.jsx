@@ -189,7 +189,7 @@ const CourseSelectionPage = () => {
 
       try {
         // Envoie une requête GET à l'endpoint /user/previous-courses pour récupérer les cours inscrits
-        const response = await fetch('http://localhost:3000/user/previous-courses', {
+        const response = await fetch('https://localhost:3001/user/previous-courses', {
           // Ajoute l'en-tête Authorization avec le format Bearer suivi du token
           headers: {
             Authorization: `Bearer ${token}`,
@@ -371,7 +371,7 @@ const CourseSelectionPage = () => {
 
     try {
       // Envoie une requête POST à l'endpoint /bookings pour enregistrer la réservation
-      const response = await fetch('http://localhost:3000/bookings', {
+      const response = await fetch('https://localhost:3001/bookings', {
         // Spécifie la méthode HTTP POST pour créer une nouvelle ressource
         method: 'POST',
         // Définit les en-têtes de la requête
@@ -403,6 +403,7 @@ const CourseSelectionPage = () => {
       // Vérifie si la réponse n'est pas réussie (statut HTTP autre que 2xx)
       if (!response.ok) {
         // Lance une erreur pour indiquer un problème avec la réservation
+        console.error('Réponse de l\'API:', response);
         throw new Error('Erreur lors de la réservation');
       }
 
@@ -443,10 +444,11 @@ const CourseSelectionPage = () => {
       // Définit une fonction asynchrone pour rafraîchir la liste des inscriptions
       const fetchInscriptions = async () => {
         // Active l'état de chargement pendant la récupération
+        console.log("test")
         setLoading(true);
-        try {
+        try {          
           // Envoie une nouvelle requête GET à /user/previous-courses
-          const response = await fetch('http://localhost:3000/user/previous-courses', {
+          const response = await fetch('https://localhost:3001/user/previous-courses', {
             // Ajoute l'en-tête Authorization
             headers: {
               Authorization: `Bearer ${token}`,

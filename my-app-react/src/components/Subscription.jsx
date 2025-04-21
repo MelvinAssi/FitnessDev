@@ -174,19 +174,12 @@ const Subscription = ({ name, price, list }) => {
           setIsButtonDisabled(true);
         }
       })
-<<<<<<< HEAD
       .then(response => {
         setPrice4s(response.data[0].prix_4s_type_abonnement);
         setID(response.data[0].id_type_abonnement);
       })
       .catch(error => {        
         console.error(error);
-=======
-      // Gère les erreurs de la requête
-      .catch(error => {
-        // Journalise l'erreur (commenté pour éviter les logs inutiles)
-        // console.error('Erreur check abonnement:', error);
->>>>>>> 07900abf7def4abe1ae1f3a3f272b3171b5500f3
       });
     }
   }, [user]); // Dépendance : user, relance si l'utilisateur change

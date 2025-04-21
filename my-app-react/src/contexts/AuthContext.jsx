@@ -99,22 +99,10 @@ export const AuthProvider = (props) => {
         prenom_inscrit: data.firstname,
         // Champ adresse_inscrit : Adresse physique
         adresse_inscrit: data.adress,
-<<<<<<< HEAD
         telephone_inscrit: data.phone,        
         type_inscrit: "client",
         date_naissance :data.birthday,
         civilite_inscrit: data.civilite,
-=======
-        // Champ telephone_inscrit : Numéro de téléphone
-        telephone_inscrit: data.phone,
-        // Champ type_inscrit : Civilité (ex. : Homme, Femme) - MODIFICATION
-        type_inscrit: data.civilite,
-        // Champ id_abonnement : Aucun abonnement par défaut
-        id_abonnement: null,
-        // Champ date_naissance : Date de naissance (non utilisé dans INSCRIT) - MODIFICATION
-        date_naissance: data.birthday,
-        // Token reCAPTCHA pour vérification
->>>>>>> 07900abf7def4abe1ae1f3a3f272b3171b5500f3
         recaptchaToken
       });
       
@@ -129,12 +117,8 @@ export const AuthProvider = (props) => {
       
       // Stocke le token dans localStorage pour persistance
       localStorage.setItem('token', token);
-<<<<<<< HEAD
-    }catch (error){
-=======
     } catch (error) {
       // Journalise l'erreur avec les détails de la réponse API
->>>>>>> 07900abf7def4abe1ae1f3a3f272b3171b5500f3
       console.error('Signup error:', error.response?.data?.message || error.message);
       
       // Propage l'erreur pour gestion dans le composant appelant

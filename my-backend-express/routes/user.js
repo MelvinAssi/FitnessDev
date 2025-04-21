@@ -19,7 +19,7 @@ const bcrypt = require('bcrypt'); // Importe bcrypt pour hacher les mots de pass
 router.get('/profil', authMiddleware, async (req, res) => {
     try {
         // Récupère l'ID de l'utilisateur depuis le token JWT
-        const userId = req.user.id;
+        const userId = req.user.id_inscrit;
         
         // Recherche l'utilisateur dans la table INSCRIT
         const result = await pool.query('SELECT * FROM inscrit WHERE id_inscrit = $1', [userId]);
@@ -55,8 +55,10 @@ router.get('/profil', authMiddleware, async (req, res) => {
 router.get('/previous-courses', authMiddleware, async (req, res) => {
     try {
         // Récupère l'ID de l'utilisateur
-        const userId = req.user.id;
-        
+        const userId = req.user.id_inscrit;
+        console.log('Utilisateur connecté :', req.user);
+        console.log('ID utilisateur dans la requête :', req.user.id_inscrit);
+        console.log('Exécution de la requête SQL pour id_inscrit:', userId);
         // Requête SQL pour joindre INSCRIPTION et COURS
         const result = await pool.query(
             `
@@ -160,7 +162,7 @@ router.put('/profil', authMiddleware, async (req, res) => {
         // Supprime la virgule finale et ajoute la condition WHERE
         query = query.slice(0, -2);
         query += ` WHERE id_inscrit = $${paramIndex} RETURNING *`;
-        values.push(req.user.id);
+        values.push(req.user.id_inscrit);
 
         // Exécute la requête
         const result = await pool.query(query, values);
@@ -194,12 +196,12 @@ router.put('/profil', authMiddleware, async (req, res) => {
 router.delete('/course/:id_cours', authMiddleware, async (req, res) => {
     try {
         // Récupère l'ID de l'utilisateur et du cours
-        const userId = req.user.id;
+        const userId = req.user.id_inscrit;
         const courseId = req.params.id_cours;
         
         // Journalise pour débogage
         console.log('Tentative de suppression - id_inscrit:', userId, 'id_cours:', courseId);
-
+        
         // Supprime l'inscription
         const result = await pool.query(
             `

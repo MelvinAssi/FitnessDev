@@ -128,7 +128,7 @@ function CoursePage() {
         }
         
         // Envoie une requête GET à l'endpoint /user/previous-courses avec le token
-        const response = await fetch('http://localhost:3000/user/previous-courses', {
+        const response = await fetch('https://localhost:3001/user/previous-courses', {
           // Ajoute l'en-tête Authorization avec le token Bearer
           headers: {
             Authorization: `Bearer ${token}`,
