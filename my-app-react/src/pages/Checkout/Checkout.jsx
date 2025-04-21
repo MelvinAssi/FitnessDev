@@ -3,15 +3,15 @@
  * Description : Composant React pour la page de validation de commande dans FitnessDev. Affiche les articles du panier,
  * permet de sélectionner une option de livraison et un mode de paiement, calcule le total, et valide la commande.
  * Utilise CartContext pour gérer le panier et react-router-dom pour la navigation. Inclut des styles responsifs pour mobile.
- * Contexte : Projet FitnessDev, aligné avec la branche Trey pour intégrer avec Panier.jsx et Produit.jsx.
+ * Contexte : Projet FitnessDev, aligné avec la branche Trey pour intégrer avec Panier.jsx, Produit.jsx, et Paiement.jsx.
  * Dépendances : react (composant, hooks), styled-components (styles), react-router-dom (navigation), CartContext (panier).
  */
 
 /** Importation des dépendances nécessaires */
-import React, { useState, useContext } from 'react'; // React est la bibliothèque principale pour créer des composants, useState gère l'état local, useContext accède au contexte
-import styled from 'styled-components'; // styled-components permet de définir des styles CSS dans des composants JavaScript
-import { CartContext } from '../../contexts/CartContext'; // CartContext fournit les articles du panier et la fonction pour les modifier
-import { useNavigate } from 'react-router-dom'; // useNavigate est un hook de react-router-dom pour rediriger l'utilisateur vers d'autres pages
+import React, { useState, useContext } from 'react'; // React pour la création du composant, useState pour gérer l'état local, useContext pour accéder au contexte
+import styled from 'styled-components'; // styled-components pour créer des styles dynamiques
+import { CartContext } from '../../contexts/CartContext'; // Contexte pour gérer les articles du panier
+import { useNavigate } from 'react-router-dom'; // useNavigate pour rediriger l'utilisateur après validation
 
 /** Définition des composants stylisés avec styled-components */
 const CheckoutContainer = styled.div`
@@ -229,35 +229,42 @@ const ValiderButton = styled.button`
  * Description : Affiche la page de validation de commande, permettant à l'utilisateur de voir les articles du panier,
  * de sélectionner une option de livraison et un mode de paiement, et de valider la commande. Utilise CartContext pour
  * gérer les articles du panier et redirige vers la page d'accueil après validation. Affiche un message d'erreur si
- * l'option de livraison ou le mode de paiement ne sont pas sélectionnés.
+ * l'option de livraison ou le mode de paiement ne sont pas sélectionnés. Inputs contrôlés pour éviter l'avertissement
+ * de changement d'état contrôlé/non contrôlé.
  * Paramètres : Aucun
  * Retour : JSX contenant les sections des articles, livraison, paiement, et validation
  */
 const Checkout = () => {
   // Déstructure l’objet retourné par useContext(CartContext) pour obtenir cartItems (tableau des articles) et setCartItems (fonction pour modifier le panier)
   // useContext est un hook qui accède au contexte CartContext défini dans src/contexts/CartContext.js
+  // cartItems est un tableau d’objets (ex. [{ id: 1, name: 'Leggings', price: 5.99, quantity: 2 }])
+  // setCartItems est une fonction pour mettre à jour cartItems
   const { cartItems, setCartItems } = useContext(CartContext);
 
   // Crée une fonction navigate à partir du hook useNavigate
   // useNavigate retourne une fonction permettant de rediriger l’utilisateur vers une autre URL
-  // Syntaxe : navigate(path) où path est une chaîne (ex. '/')
+  // Syntaxe : navigate(path, [options])
+  // Exemple : navigate('/') redirige vers la page d'accueil
   const navigate = useNavigate();
 
   // Crée un état local selectedShipping avec useState pour suivre l’option de livraison choisie
-  // Initialisé à null, car aucune option n’est sélectionnée au départ
+  // Initialisé avec un objet vide pour éviter les erreurs d’accès à des propriétés indéfinies
   // setSelectedShipping est la fonction pour mettre à jour cet état
   // Syntaxe : const [state, setState] = useState(initialValue)
-  const [selectedShipping, setSelectedShipping] = useState(null);
+  // Exemple : selectedShipping peut devenir { name: 'LIVRAISON STANDARD', price: 3.90, time: '9-11 jours ouvrés' }
+  const [selectedShipping, setSelectedShipping] = useState({});
 
   // Crée un état local selectedPayment pour suivre le mode de paiement choisi
-  // Initialisé à null, car aucun mode n’est sélectionné au départ
-  const [selectedPayment, setSelectedPayment] = useState(null);
+  // Initialisé avec un objet vide pour éviter les erreurs
+  // setSelectedPayment est la fonction pour mettre à jour cet état
+  // Exemple : selectedPayment peut devenir { name: 'Visa ****1269', value: 'visa' }
+  const [selectedPayment, setSelectedPayment] = useState({});
 
   // Définit un tableau statique des options de livraison disponibles
   // Chaque option est un objet avec :
-  // - name : Nom de l’option (ex. 'LIVRAISON STANDARD')
-  // - price : Prix en euros (ex. 3.90)
-  // - time : Délai estimé (ex. '9-11 jours ouvrés')
+  // - name : Nom de l’option (chaîne, ex. 'LIVRAISON STANDARD')
+  // - price : Prix en euros (nombre, ex. 3.90)
+  // - time : Délai estimé (chaîne, ex. '9-11 jours ouvrés')
   const shippingOptions = [
     { name: 'LIVRAISON STANDARD', price: 3.90, time: '9-11 jours ouvrés' },
     { name: 'LIVRAISON EXPRESS', price: 7.85, time: '5-7 jours ouvrés' },
@@ -266,8 +273,8 @@ const Checkout = () => {
 
   // Définit un tableau statique des modes de paiement disponibles
   // Chaque mode est un objet avec :
-  // - name : Nom affiché (ex. 'Visa ****1269')
-  // - value : Valeur unique pour l’input radio (ex. 'visa')
+  // - name : Nom affiché (chaîne, ex. 'Visa ****1269')
+  // - value : Valeur unique pour l’input radio (chaîne, ex. 'visa')
   const paymentMethods = [
     { name: 'Visa ****1269', value: 'visa' },
     { name: 'Coupon Limité', value: 'coupon' },
@@ -276,7 +283,7 @@ const Checkout = () => {
 
   /**
    * Calcul du total de la commande
-   * Description : Calcule le total des articles (prix * quantité) et ajoute les frais de livraison.
+   * Description : Calcule le total des articles (prix * quantité) et ajoute les frais de livraison si sélectionnés.
    * Variables :
    * - cartTotal : Total des articles, calculé avec reduce
    * - shippingCost : Frais de livraison, 0 si aucune option sélectionnée
@@ -286,21 +293,20 @@ const Checkout = () => {
   // Syntaxe : array.reduce(callback, initialValue)
   // Arguments :
   // - callback : Fonction exécutée pour chaque élément, prend (accumulateur, élément, index, tableau)
-  // - initialValue : Valeur initiale de l’accumulateur (ici 0)
+  // - initialValue : Valeur initiale de l'accumulateur (ici 0)
   // Callback arguments :
   // - total : Accumulateur, somme courante des prix (initialisé à 0)
   // - item : Élément courant du tableau cartItems (ex. { id: 1, name: 'Leggings', price: 5.99, quantity: 2 })
   // Retour : Nombre, somme des prix * quantités
+  // item.quantity || 1 utilise l’opérateur || pour fournir 1 si quantity est undefined
   const cartTotal = cartItems.reduce((total, item) => {
-    // item.quantity || 1 utilise l’opérateur || pour fournir 1 comme valeur par défaut si quantity est undefined
-    // item.price * (item.quantity || 1) calcule le coût de l’article
-    // total + ... ajoute ce coût à l’accumulateur
     return total + (item.price * (item.quantity || 1));
-  }, 0); // 0 est la valeur initiale de total
+  }, 0);
 
-  // shippingCost utilise l’opérateur ternaire (? :) pour retourner selectedShipping.price si selectedShipping existe, sinon 0
+  // shippingCost utilise l’opérateur ternaire (? :) pour retourner selectedShipping.price si selectedShipping.name existe, sinon 0
   // Syntaxe : condition ? valeurSiVrai : valeurSiFaux
-  const shippingCost = selectedShipping ? selectedShipping.price : 0;
+  // selectedShipping.name vérifie si une option est sélectionnée
+  const shippingCost = selectedShipping.name ? selectedShipping.price : 0;
 
   // totalSum additionne cartTotal et shippingCost
   // Résultat : Nombre représentant le coût total de la commande
@@ -311,13 +317,13 @@ const Checkout = () => {
    * Description : Gère le clic sur le bouton "VALIDER". Vérifie que l’option de livraison et le mode de paiement
    * sont sélectionnés, journalise la commande, vide le panier, et redirige vers la page d’accueil.
    * Paramètres : Aucun (fonction déclenchée par un événement onClick)
-   * Retour : Aucun (effets secondaires : alerte, journalisation, mise à jour du panier, redirection)
+   * Retour : Aucun (effet secondaire : alerte, journalisation, mise à jour du panier, redirection)
    */
   const handleValidate = () => {
-    // Vérifie si selectedShipping et selectedPayment sont définis
-    // !selectedShipping retourne true si null/undefined, !selectedPayment idem
+    // Vérifie si l’option de livraison et le mode de paiement sont sélectionnés
+    // !selectedShipping.name retourne true si name est undefined, !selectedPayment.value idem
     // || combine les conditions : si l’une est vraie, affiche une alerte
-    if (!selectedShipping || !selectedPayment) {
+    if (!selectedShipping.name || !selectedPayment.value) {
       // alert est une fonction native du navigateur affichant une boîte de dialogue
       // Argument : Message à afficher
       alert('Veuillez sélectionner une option de livraison et un mode de paiement.');
@@ -389,14 +395,14 @@ const Checkout = () => {
           // ShippingOption est un label contenant un bouton radio et les détails
           <ShippingOption
             key={option.name} // Clé unique basée sur le nom de l’option
-            checked={selectedShipping && selectedShipping.name === option.name} // Propriété checked pour style conditionnel
+            checked={selectedShipping.name === option.name} // Booléen pour style conditionnel
           >
             {/* RadioInput est un input de type radio pour sélectionner une option */}
             <RadioInput
               type="radio" // Type d’input : bouton radio
               name="shipping" // Nom commun pour grouper les boutons radio
-              value={option.name} // Valeur de l’option (ex. 'LIVRAISON STANDARD')
-              checked={selectedShipping && selectedShipping.name === option.name} // État sélectionné
+              value={option.name || ''} // Valeur de l’option, chaîne vide si undefined
+              checked={selectedShipping.name === option.name} // Booléen pour l’état sélectionné
               onChange={() => setSelectedShipping(option)} // Met à jour selectedShipping avec l’option
             />
             <ShippingTitle>{option.name}</ShippingTitle>
@@ -416,8 +422,8 @@ const Checkout = () => {
             <RadioInput
               type="radio" // Type d’input : bouton radio
               name="payment" // Nom commun pour grouper les boutons radio
-              value={method.value} // Valeur du mode (ex. 'visa')
-              checked={selectedPayment && selectedPayment.value === method.value} // État sélectionné
+              value={method.value || ''} // Valeur du mode, chaîne vide si undefined
+              checked={selectedPayment.value === method.value} // Booléen pour l’état sélectionné
               onChange={() => setSelectedPayment(method)} // Met à jour selectedPayment avec le mode
             />
             <PaymentText>{method.name}</PaymentText>
