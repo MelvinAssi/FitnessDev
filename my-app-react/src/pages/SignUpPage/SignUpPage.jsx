@@ -134,7 +134,7 @@ const SignUpPage = () => {
                         ref={addInputs}
                         type="text"
                         placeholder="Votre nom"
-                        pattern="[a-z]{2,}$"
+                        pattern="^[a-zA-Z]{2,}$"
                         required
                         aria-label="Entrer votre nom"
                     />
@@ -142,7 +142,7 @@ const SignUpPage = () => {
                         ref={addInputs}
                         type="text"
                         placeholder="Votre prénom"
-                        pattern="[a-z]{2,}$"
+                        pattern="^[a-zA-Z]{2,}$"
                         required
                         aria-label="Entrer votre prénom"
                     />
@@ -164,7 +164,7 @@ const SignUpPage = () => {
                         ref={addInputs}
                         type="email"
                         placeholder="Adresse e-mail"
-                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        pattern="^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
                         required
                         aria-label="Entrez votre adresse e-mail"
                     />
@@ -172,7 +172,7 @@ const SignUpPage = () => {
                         ref={addInputs}
                         type="email"
                         placeholder="Confirmation adresse e-mail"
-                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        pattern="^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
                         required
                         aria-label="Entrez votre adresse e-mail"
                     />
@@ -181,6 +181,7 @@ const SignUpPage = () => {
                         ref={addInputs}
                         type="password"
                         placeholder="Mot de passe"
+                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{12,50}$"
                         required
                         aria-label="Entrez votre mot de passe"
                     />

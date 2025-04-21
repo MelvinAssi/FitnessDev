@@ -110,10 +110,10 @@ const Subscription = ({ name, price, list }) => {
         }
       })
       .then(response => {
-        setPrice4s(response.data[0].prix_4_semaines);
+        setPrice4s(response.data[0].prix_4s_type_abonnement);
         setID(response.data[0].id_type_abonnement);
       })
-      .catch(error => {
+      .catch(error => {        
         console.error(error);
       });
 

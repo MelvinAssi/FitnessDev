@@ -1,5 +1,3 @@
-\connect fitness_dev
-
 -- TABLE INSCRIT
 CREATE TABLE INSCRIT (
     id_inscrit SERIAL PRIMARY KEY,
@@ -9,13 +7,15 @@ CREATE TABLE INSCRIT (
     adresse_inscrit VARCHAR(50) NOT NULL,
     telephone_inscrit VARCHAR(15) NOT NULL,
     mdp_inscrit VARCHAR(60) NOT NULL,
-    type_inscrit VARCHAR(10) NOT NULL
+    type_inscrit VARCHAR(10) NOT NULL,
+    date_naissance DATE NOT NULL,
+    civilite_inscrit VARCHAR(30) NOT NULL,
 );
 
--- TABLE TYPE_ABONNEMENT_
-CREATE TABLE TYPE_ABONNEMENT_ (
+-- TABLE TYPE_ABONNEMENT
+CREATE TABLE TYPE_ABONNEMENT (
     id_type_abonnement SERIAL PRIMARY KEY,
-    nom_type_abonnement_ VARCHAR(20) NOT NULL UNIQUE,
+    nom_type_abonnement VARCHAR(20) NOT NULL UNIQUE,
     prix_4s_type_abonnement DECIMAL(10,2) NOT NULL
 );
 
@@ -30,7 +30,7 @@ CREATE TABLE ABONNEMENT (
     id_inscrit INT,
     id_type_abonnement INT,
     FOREIGN KEY(id_inscrit) REFERENCES INSCRIT(id_inscrit),
-    FOREIGN KEY(id_type_abonnement) REFERENCES TYPE_ABONNEMENT_(id_type_abonnement)
+    FOREIGN KEY(id_type_abonnement) REFERENCES TYPE_ABONNEMENT(id_type_abonnement)
 );
 
 -- TABLE COACH
@@ -104,16 +104,13 @@ CREATE INDEX idx_achat_inscrit ON ACHAT(id_inscrit);
 CREATE INDEX idx_inscription_cours ON INSCRIPTION(id_cours);
 
 -- Données
-INSERT INTO INSCRIT (email_inscrit, nom_inscrit, prenom_inscrit, adresse_inscrit, telephone_inscrit, mdp_inscrit, type_inscrit)
-VALUES 
-    ('jean.dupont@example.com', 'Dupont', 'Jean', '123 Rue Test, Paris', '0123456789', '$2b$10$zPxoKR1.WYIPBJ2YnQEzKuF3QyMukVAfkO1ZoBecU8oHj4qUPajf.', 'client'),
-    ('marie.leroy@example.com', 'Leroy', 'Marie', '456 Av. Exemple, Lyon', '0987654321', '$2b$10$zPxoKR1.WYIPBJ2YnQEzKuF3QyMukVAfkO1ZoBecU8oHj4qUPajf.', 'client');
 
-INSERT INTO TYPE_ABONNEMENT_ (nom_type_abonnement_, prix_4s_type_abonnement)
+
+INSERT INTO TYPE_ABONNEMENT (nom_type_abonnement, prix_4s_type_abonnement)
 VALUES 
-    ('Essentiel', 31.96),
-    ('Original', 39.96),
-    ('Ultra', 43.96);
+    ('ESSENTIAL', 31.96),
+    ('ORIGINAL', 39.96),
+    ('ULTRA', 43.96);
 
 INSERT INTO ABONNEMENT (duree_abonnement, datedebut_abonnement, datefin_abonnement, prix_abonnement, actif_abonnement, id_inscrit, id_type_abonnement)
 VALUES 

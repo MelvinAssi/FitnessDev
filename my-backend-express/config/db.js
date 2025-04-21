@@ -11,15 +11,15 @@ require('dotenv').config();
 const pool = new Pool({
     // Utilisateur de la base (ex. : postgres), lu depuis .env.
     // process.env.DB_USER récupère la valeur de DB_USER dans .env.
-    user: process.env.DB_USER,
+    user: process.env.DB_USER || 'postgres',
     // Hôte de la base (ex. : localhost), où PostgreSQL est exécuté.
-    host: process.env.DB_HOST,
+    host: process.env.DB_HOST || 'postgres',
     // Nom de la base (ex. : fitness_dev).
-    database: process.env.DB_NAME,
+    database: process.env.DB_NAME || 'FitnessDev_db',
     // Mot de passe de l'utilisateur PostgreSQL.
-    password: process.env.DB_PASSWORD,
+    password: process.env.DB_PASSWORD || 'Dgp7.dgp7',
     // Port de PostgreSQL (par défaut 5432).
-    port: process.env.DB_PORT,
+    port: process.env.DB_PORT || 5432,
 });
 
 // Exporte l'instance pool pour qu'elle soit utilisée dans d'autres fichiers (ex. : user.js, auth.js).

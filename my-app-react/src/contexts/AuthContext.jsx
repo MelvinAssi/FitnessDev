@@ -41,7 +41,6 @@ export const AuthProvider = (props) => {
         adresse_inscrit: data.adress,
         telephone_inscrit: data.phone,        
         type_inscrit: "client",
-        id_abonnement: null,
         date_naissance :data.birthday,
         civilite_inscrit: data.civilite,
         recaptchaToken
@@ -50,7 +49,7 @@ export const AuthProvider = (props) => {
       const decodedUser = jwtDecode(token);
       setUser(decodedUser);
       localStorage.setItem('token', token);
-    }catch{
+    }catch (error){
       console.error('Signup error:', error.response?.data?.message || error.message);
       throw error;
     }

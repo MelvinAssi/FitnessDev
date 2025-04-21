@@ -1,7 +1,7 @@
-FROM node:22 AS build
+FROM node:23-alpine
 WORKDIR /app
-COPY package.json package-lock.json ./
+COPY package*.json ./
 RUN npm install
 COPY . .
-EXPOSE 3000
-CMD ["npm", "run", "dev", "--", "--port", "3000", "--host"]
+EXPOSE 5173
+CMD ["npm", "run", "dev", "--", "--port", "5173", "--host"]

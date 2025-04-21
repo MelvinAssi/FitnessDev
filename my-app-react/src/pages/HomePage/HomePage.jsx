@@ -34,7 +34,7 @@ const HeroSectionWrapper = styled.div`
 `;
 const HeroSection = styled.section`
   position: relative;
-  background-image: ${({ bgDesktop }) => `url(${bgDesktop})`};
+  background-image: ${({ $bgdesktop }) => `url(${$bgdesktop})`};
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -74,8 +74,8 @@ const HeroContent = styled.div`
     }
   }
 `;
-const Section = styled.div`
-  background-image: ${({ bgDesktop }) => `url(${bgDesktop})`};
+const Section = styled.section`
+  background-image: ${({ $bgdesktop }) => `url(${$bgdesktop})`};
   min-height: 100vh;
   background-size: cover;
   background-position: center;
@@ -164,7 +164,7 @@ const HomePage = () => {
       <Offset/>
       <HeroSectionWrapper>
         <MobileImage src={fd_homepage_responsive1} alt="Visuel mobile" />        
-        <HeroSection bgDesktop={fd_homepage1} >
+        <HeroSection $bgdesktop={fd_homepage1} >
           <HeroContent>
             <h1>DÉPASSE-TOI ET ATTEINS TES OBJECTIFS !</h1>
             <p>Retrouve ton club FitnessDev le plus proche de 6H à 23H en France</p>
@@ -172,7 +172,7 @@ const HomePage = () => {
         </HeroSection>
       </HeroSectionWrapper>
 
-      <Section   bgDesktop={fd_homepage2} style={{ justifyContent:"flex-start" }}>
+      <Section   $bgdesktop={fd_homepage2} style={{ justifyContent:"flex-start" }}>
         <MobileImage src={fd_homepage_responsive2} alt="Visuel mobile" />
         <ContentBlock style={{ color: "#000000" }}>
           <h1>FITNESSDEV CLUBS DE SPORT</h1>
@@ -182,7 +182,7 @@ const HomePage = () => {
         </ContentBlock>        
       </Section>
 
-      <Section bgDesktop={fd_homepage3}  style={{ justifyContent:"flex-end" }}>
+      <Section $bgdesktop={fd_homepage3}  style={{ justifyContent:"flex-end" }}>
         <MobileImage src={fd_homepage_responsive3} alt="Visuel mobile" />     
         <ContentBlock style={{ height: "auto" ,color: "#000000" }}>
           <h1>+120 000</h1>

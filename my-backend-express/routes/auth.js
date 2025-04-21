@@ -5,15 +5,21 @@
     const { body, validationResult } = require('express-validator');
     const verifyRecaptcha = require('../middleware/verifyRecaptcha')
     require('dotenv').config();
-
+    const rateLimit = require('express-rate-limit');
+    const authLimiter = rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 min
+        max: 5, // 5 tentatives max
+        message: 'Trop de tentatives. Réessayez dans 15 minutes.',
+      });
     const router = express.Router();
 
     router.post('/signup', [
         body('email_inscrit').isEmail().withMessage('Email invalide'),
-        body('mdp_inscrit').isLength({ min: 8 }).withMessage('Mot de passe trop court'),
-        verifyRecaptcha
+        body('mdp_inscrit').isLength({ min: 12 }).withMessage('Mot de passe trop court'),
+        verifyRecaptcha,authLimiter
     ], async (req, res) => {
         try {
+            console.log("Reçu dans /signup :", req.body);
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({ error: errors.array()[0].msg });
@@ -27,7 +33,6 @@
                 telephone_inscrit,
                 mdp_inscrit,
                 type_inscrit,
-                id_abonnement,
                 date_naissance,
                 civilite_inscrit,
             } = req.body;
@@ -46,9 +51,9 @@
             const newUser = await pool.query(
                 `INSERT INTO INSCRIT (
                     email_inscrit, nom_inscrit, prenom_inscrit, adresse_inscrit,
-                    telephone_inscrit, mdp_inscrit, type_inscrit, id_abonnement,
+                    telephone_inscrit, mdp_inscrit, type_inscrit,
                     date_naissance, civilite_inscrit
-                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
                 RETURNING id_inscrit, email_inscrit, nom_inscrit, prenom_inscrit, type_inscrit`,
                 [
                     email_inscrit,
@@ -58,7 +63,6 @@
                     telephone_inscrit,
                     hashedPassword,
                     type_inscrit || 'client',
-                    id_abonnement || null,
                     date_naissance,
                     civilite_inscrit,
                 ]
@@ -81,7 +85,7 @@
         }
     });
 
-    router.post('/login',verifyRecaptcha, async (req, res) => {
+    router.post('/login',verifyRecaptcha,authLimiter, async (req, res) => {
         const { email_inscrit, mdp_inscrit } = req.body;
 
         try {
