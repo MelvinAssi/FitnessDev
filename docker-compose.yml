@@ -21,7 +21,7 @@ services:
       - DB_HOST=postgres
       - DB_USER=postgres
       - DB_DATABASE=FitnessDev_db
-      - DB_PASSWORD=Dgp7.dgp7
+      - DB_PASSWORD
       - DB_PORT=5432
     depends_on:
       - postgres
